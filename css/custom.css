@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: "Montserrat", serif;
+}
+
+main {
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+select {
+  cursor: pointer;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.jacket-builder {
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 10px 0;
+}
+
+.jacket-builder .builder-options {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.jacket-builder .builder-options .options-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.jacket-builder .builder-options .options-tabs li {
+  flex: 1;
+}
+
+.jacket-builder .builder-options .options-tabs li button {
+  width: 100%;
+  padding: 5px 2px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+
+.jacket-builder .builder-options .options-tabs li button.active {
+  background-color: var(--bs-info);
+  color: #fff;
+}
+
+.jacket-builder .builder-options .options-content {
+  padding: 0 10px;
+}
+
+.jacket-builder .builder-options .option-keys li button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  /* border-radius: 10px; */
+  transition: 0.3s;
+}
+
+.jacket-builder .builder-options .option-keys li button:hover {
+  background-color: rgba(100, 116, 139, 0.3);
+}
+
+.jacket-builder .builder-options .option-keys li button .option {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.jacket-builder .builder-options .option-keys li button .value {
+  font-size: 18px;
+}
+
+.jacket-builder .builder-options .option-keys li button .thumb {
+  display: block;
+  width: 50px;
+  height: 50px;
+}
+
+.jacket-builder .builder-options .option-keys li button .thumb-color {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.jacket-builder .builder-options .option-keys li button .thumb-color .color {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.jacket-builder .option-values {
+  position: relative;
+  display: none;
+}
+
+.jacket-builder .option-values .backbtn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  height: 40px;
+  width: 40px;
+  background-color: #64748b;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.jacket-builder .option-values h6 {
+  text-align: center;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.jacket-builder .option-values .option-images {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.jacket-builder .option-values .option-images li {
+  width: 30%;
+  text-align: center;
+}
+
+.jacket-builder .option-values .option-images li input {
+  display: none;
+}
+
+.jacket-builder .option-values .option-images li img {
+  height: 70px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.jacket-builder .option-values .option-images li input:checked+label img {
+  border-color: #000;
+}
+
+.jacket-builder .option-values .option-colors {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.jacket-builder .option-values .option-colors li label {
+  height: 40px;
+  width: 40px;
+  display: block;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  padding: 7px;
+  cursor: pointer;
+}
+.jacket-builder .option-values .option-colors li input{
+  display: none;
+}
+.jacket-builder .option-values .option-colors li input:checked + label{
+  border-color: #000;
+}
+
+.jacket-builder .option-values .option-colors li label .color {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.model-wrapper{
+  min-height: 95vh;
+}
+.model-wrapper .model-viewer{
+  height: 100%;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1920px) {}
+
+@media only screen and (max-width: 1599px) {}
+
+@media only screen and (max-width: 1444px) {}
+
+@media only screen and (max-width: 1399px) {}
+
+@media only screen and (max-width: 1199px) {}
+
+@media only screen and (max-width: 991px) {}
+
+@media only screen and (max-width: 767px) {}
+
+@media only screen and (max-width: 575px) {}
