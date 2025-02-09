@@ -2,11 +2,8 @@
 
 # dependencies
 /node_modules
-/final_files
-/design
 /.pnp
 .pnp.js
-*.zip
 
 # testing
 /coverage

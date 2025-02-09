@@ -159,7 +159,7 @@ button:focus {
 
 .jacket-builder .option-values {
   position: relative;
-  display: none;
+  /* display: none; */
 }
 
 .jacket-builder .option-values .backbtn {
