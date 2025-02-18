@@ -2,22 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useTexture, useGLTF } from '@react-three/drei';
 
-const ProductModel = ({ modelPath, texturePath }) => {
+const ProductModel = ({ modelPath, texturePath, patchTexture }) => {
     const { scene } = useGLTF(modelPath);
-    const texture = useTexture(texturePath);
-
-    // Traverse to apply texture to meshes
-    scene.traverse((child) => {
-        if (child.isMesh) {
-            child.material.map = texture;
-            child.material.needsUpdate = true;
-        }
-    });
-
-    // Center the model
     scene.position.set(0, -2, 0);
-
-    return <primitive object={scene} scale={2} />; // Scale down the model to fit
+    const patch = useTexture(patchTexture);
+    return <>
+        <primitive object={scene} scale={2} />; // Scale down the model to fit
+        <mesh position={[0, 0.5, 0.8]} rotation={[0, 0, 0]} scale={[0.5, 0.5, 0.5]}>
+            <planeGeometry args={[1, 1]} />
+            <meshStandardMaterial map={patch} transparent />
+        </mesh>
+    </>
 };
 
 const ProductViewer = ({ modelPath, texturePath }) => {
@@ -34,7 +29,6 @@ const ProductViewer = ({ modelPath, texturePath }) => {
                 height: window.innerHeight,
             });
         };
-
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
