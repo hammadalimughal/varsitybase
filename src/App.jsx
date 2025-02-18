@@ -30,13 +30,14 @@ import patchSkull from './assets/images/patches/skull.png'
 import patchUsFlag from './assets/images/patches/us-flag.png'
 
 // textures
-// import texture1 from './assets/models/texture.png'
-// import texture2 from './assets/models/texture_diffuse.png'
-// import texture3 from './assets/models/texture_metallic.png'
-// import texture4 from './assets/models/texture_normal.png'
-// import texture5 from './assets/models/texture_pbr.png'
-// import texture6 from './assets/models/texture-orange.png'
-// import texture7 from './assets/models/texture_white.png'
+import textureTransparent from './assets/models/transparent.png'
+import texture1 from './assets/models/texture.png'
+import texture2 from './assets/models/texture_diffuse.png'
+import texture3 from './assets/models/texture_metallic.png'
+import texture4 from './assets/models/texture_normal.png'
+import texture5 from './assets/models/texture_pbr.png'
+import texture6 from './assets/models/texture-orange.png'
+import texture7 from './assets/models/texture_white.png'
 
 
 const App = () => {
@@ -45,25 +46,31 @@ const App = () => {
     body: '#f2e7d5',
     insideLining: '#875b32',
   })
-  const [patchPosition,setPatchPosition] = useState(null)
+  const [patch, setPatch] = useState({
+    texture: textureTransparent
+  })
   const [activeOption, setActiveOption] = useState(null)
-  const [model, setModel] = useState(modelOrange)
-  // const [texture, setTexture] = useState(texture1)
+  const [model, setModel] = useState(modelBlack)
+  const [texture, setTexture] = useState(textureTransparent)
   const handleValue = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
 
   useEffect(() => {
-    setActiveOption(null)
-    if (formData.body == '#f2e7d5') {
+    // setActiveOption(null)
+    console.log('formData', formData)
+    if (formData.body == 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)') {
+      setModel(modelBlack)
       // setTexture(texture1)
-      // setModel()
-    } else if (formData.body == '#be6858') {
+    } else if (formData.body == 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)') {
+      setModel(modelBlackOrange)
       // setTexture(texture2)
-    } else if (formData.body == '#ec8e19') {
+    } else if (formData.body == 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)') {
+      setModel(modelRed)
       // setTexture(texture3)
-    } else if (formData.body == '#875b32') {
+    } else if (formData.body == 'linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)') {
+      setModel(modelBlue)
       // setTexture(texture4)
     } else if (formData.body == 'red') {
       // setTexture(texture5)
@@ -71,6 +78,10 @@ const App = () => {
       // setTexture(texture6)
     }
   }, [formData])
+
+  const handlePatch = (e) => {
+    setPatch({ ...patch, texture: e.target.value })
+  }
 
   return (
     <>
@@ -167,44 +178,32 @@ const App = () => {
                             </li>
                           </ul>
                         </div>}
-                        {activeOption == 'body' && <div class="option-values" id="body-color-content">
+                        {activeOption === 'body' && <div class="option-values" id="body-color-content">
                           <button class="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Body</h6>
                           <ul class="option-colors">
                             <li>
-                              <input value="#f2e7d5" type="radio" name="body" checked={formData.body == '#f2e7d5'} onChange={handleValue} id="body-color-f2e7d5" />
-                              <label for="body-color-f2e7d5">
-                                <span class="color" style={{ backgroundColor: '#f2e7d5' }}></span>
+                              <input value="linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)'} onChange={handleValue} id="body-color-000000" />
+                              <label for="body-color-000000">
+                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)' }}></span>
                               </label>
                             </li>
                             <li>
-                              <input value="#be6858" type="radio" name="body" checked={formData.body == '#be6858'} onChange={handleValue} id="body-color-be6858" />
+                              <input value="linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)'} onChange={handleValue} id="body-color-be6858" />
                               <label for="body-color-be6858">
-                                <span class="color" style={{ backgroundColor: '#be6858' }}></span>
+                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)' }}></span>
                               </label>
                             </li>
                             <li>
-                              <input value="#ec8e19" type="radio" name="body" checked={formData.body == '#ec8e19'} onChange={handleValue} id="body-color-ec8e19" />
+                              <input value="linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)'} onChange={handleValue} id="body-color-ec8e19" />
                               <label for="body-color-ec8e19">
-                                <span class="color" style={{ backgroundColor: '#ec8e19' }}></span>
+                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)' }}></span>
                               </label>
                             </li>
                             <li>
-                              <input value="#875b32" type="radio" name="body" checked={formData.body == '#875b32'} onChange={handleValue} id="body-color-875b32" />
+                              <input value="linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)'} onChange={handleValue} id="body-color-875b32" />
                               <label for="body-color-875b32">
-                                <span class="color" style={{ backgroundColor: '#875b32' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="red" type="radio" name="body" checked={formData.body == 'red'} onChange={handleValue} id="body-color-red" />
-                              <label for="body-color-red">
-                                <span class="color" style={{ backgroundColor: 'red' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="orange" type="radio" name="body" checked={formData.body == 'orange'} onChange={handleValue} id="body-color-orange" />
-                              <label for="body-color-orange">
-                                <span class="color" style={{ backgroundColor: 'orange' }}></span>
+                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)' }}></span>
                               </label>
                             </li>
                           </ul>
@@ -249,49 +248,49 @@ const App = () => {
                       <div class="tab-pane fade" id="design" role="tabpanel" aria-labelledby="design-tab"
                         tabindex="0">
                         <div class="option-values" id="collar-content">
-                          {!patchPosition && <ul class="option-images">
+                          {!patch?.position && <ul class="option-images">
                             <li>
-                              <input type="radio" name="collar" onChange={()=> setPatchPosition('right-chest')} id="patch-right-chest" />
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'right-chest' })} id="patch-right-chest" />
                               <label for="patch-right-chest">
                                 <img src={rightChestPatch} alt="" />
                                 <span class="txt">Right Chest</span>
                               </label>
                             </li>
                             <li>
-                              <input type="radio" name="collar" onChange={()=> setPatchPosition('left-chest')} id="collar-byron" value='byron' />
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'left-chest' })} id="collar-byron" value='byron' />
                               <label for="collar-byron">
                                 <img src={leftChestPatch} alt="" />
                                 <span class="txt">Left Chest</span>
                               </label>
                             </li>
                           </ul>}
-                          {patchPosition && <div className="option-values">
-                            <button class="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                          {patch?.position && <div className="option-values">
+                            <button class="backbtn" onClick={() => setPatch({ ...patch, position: null })}><IoChevronBack /></button>
                             <ul class="option-images">
-                            <li>
-                              <input type="radio" name="collar" onChange={handleValue} id="patch-right-chest" />
-                              <label for="patch-right-chest">
-                                <img src={patchBullDog} alt="" />
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={handleValue} id="patch-right-chest" />
-                              <label for="patch-right-chest">
-                                <img src={patchMasks} alt="" />
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={handleValue} id="patch-right-chest" />
-                              <label for="patch-right-chest">
-                                <img src={patchSkull} alt="" />
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={handleValue} id="patch-right-chest" />
-                              <label for="patch-right-chest">
-                                <img src={patchUsFlag} alt="" />
-                              </label>
-                            </li>
+                              <li>
+                                <input type="radio" name="patch" value={patchBullDog} onChange={handlePatch} id="patch-bull-dog" />
+                                <label for="patch-bull-dog">
+                                  <img src={patchBullDog} alt="" />
+                                </label>
+                              </li>
+                              <li>
+                                <input type="radio" name="patch" value={patchMasks} onChange={handlePatch} id="patch-masks" />
+                                <label for="patch-masks">
+                                  <img src={patchMasks} alt="" />
+                                </label>
+                              </li>
+                              <li>
+                                <input type="radio" name="patch" value={patchSkull} onChange={handlePatch} id="patch-skull" />
+                                <label for="patch-skull">
+                                  <img src={patchSkull} alt="" />
+                                </label>
+                              </li>
+                              <li>
+                                <input type="radio" name="patch" value={patchUsFlag} onChange={handlePatch} id="patch-flag" />
+                                <label for="patch-flag">
+                                  <img src={patchUsFlag} alt="" />
+                                </label>
+                              </li>
                             </ul>
                           </div>}
                         </div>
@@ -303,9 +302,9 @@ const App = () => {
               <div class="col-lg-8 col-12 panel">
                 <div class="model-wrapper h-100">
                   <ProductViewer
-                  key={model}
+                    key={model}
                     // texturePath={texture} 
-                    modelPath={model} />
+                    modelPath={model} patch={patch} />
                 </div>
               </div>
             </div>

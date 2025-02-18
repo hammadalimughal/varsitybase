@@ -1,21 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useTexture, useGLTF } from '@react-three/drei';
 
-const ProductModel = ({ modelPath, texturePath, patchTexture }) => {
+const ProductModel = ({ modelPath, texturePath, patch }) => {
+    console.log('patch', patch)
     const { scene } = useGLTF(modelPath);
     scene.position.set(0, -2, 0);
-    const patch = useTexture(patchTexture);
+    const patchTexture = useTexture(patch?.texture);
     return <>
         <primitive object={scene} scale={2} />; // Scale down the model to fit
-        <mesh position={[0, 0.5, 0.8]} rotation={[0, 0, 0]} scale={[0.5, 0.5, 0.5]}>
+        <mesh position={[-0.5, 0.5, 0.6]} rotation={[0, 0, 0]} scale={[0.5, 0.5, 0.5]}>
             <planeGeometry args={[1, 1]} />
-            <meshStandardMaterial map={patch} transparent />
+            <meshStandardMaterial map={patchTexture} transparent />
         </mesh>
     </>
 };
 
-const ProductViewer = ({ modelPath, texturePath }) => {
+const ProductViewer = ({ modelPath, texturePath, patch }) => {
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -45,7 +46,7 @@ const ProductViewer = ({ modelPath, texturePath }) => {
             >
                 <ambientLight intensity={0.5} />
                 <directionalLight position={[2, 2, 5]} />
-                <ProductModel modelPath={modelPath} texturePath={texturePath} />
+                <ProductModel modelPath={modelPath} texturePath={texturePath} patch={patch} />
                 <OrbitControls enableZoom={false} />
             </Canvas>
         </div>
