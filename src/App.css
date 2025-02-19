@@ -159,6 +159,7 @@ button:focus {
 
 .jacket-builder .option-values {
   position: relative;
+  padding-top: 30px;
   /* display: none; */
 }
 
@@ -251,6 +252,85 @@ button:focus {
 .model-wrapper .model-viewer{
   height: 100%;
   width: 100%;
+}
+.upload-patch{
+  position: relative;
+  padding-top: 30px;
+}
+.upload-patch .backbtn{
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9;
+}
+.upload-field{
+  margin-top: 30px;
+  position: relative;
+  border: 1px dashed rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: #f1f5f9;
+}
+.upload-field h5,
+.upload-field h6{
+  line-height: 1;
+}
+.upload-field input{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.model-loading{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+}
+/* .model-loading h6{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 30px;
+  text-align: center;
+} */
+.model-loading img{
+  max-height: 75vh;
+}
+.model-loading canvas{
+  height: 80vh !important;
+}
+.input-patch{
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+.input-patch input{
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+.input-patch button{
+  background-color: #64748b;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 5px 15px;
 }
 
 @media only screen and (max-width: 1920px) {}

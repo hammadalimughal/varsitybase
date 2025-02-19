@@ -10,6 +10,7 @@ import { IoChevronBack } from "react-icons/io5";
 // images
 import patchIcon from './assets/images/patches/patch-icon.jpg'
 import letterIcon from './assets/images/patches/letter-icon.png'
+import uploadIcon from './assets/images/patches/upload-icon.png'
 import leftChestPatch from './assets/images/left-chest.svg'
 import rightChestPatch from './assets/images/right-chest.svg'
 import byronCollar from './assets/images/byron-collar.svg'
@@ -48,10 +49,10 @@ const App = () => {
     body: '#f2e7d5',
     insideLining: '#875b32',
   })
-  const [patch, setPatch] = useState({
-
-    texture: textureTransparent
-  })
+  const [activeOption, setActiveOption] = useState(null)
+  const [model, setModel] = useState(modelBlack)
+  const [texture, setTexture] = useState(textureTransparent)
+  const [patch, setPatch] = useState(null)
 
   const [patchArray, setPatchArray] = useState([
     {
@@ -95,7 +96,6 @@ const App = () => {
 
 
   useEffect(() => {
-    // debugger
     if (patch?.position == 'right-chest') {
       setPatch({
         ...patch,
@@ -115,9 +115,6 @@ const App = () => {
     }
   }, [patch?.position])
 
-  const [activeOption, setActiveOption] = useState(null)
-  const [model, setModel] = useState(modelBlack)
-  const [texture, setTexture] = useState(textureTransparent)
   const handleValue = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
@@ -155,6 +152,41 @@ const App = () => {
     }
   }, [patch])
 
+
+  const handlePathUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      // setPatchArray((prevArray) => [...prevArray, { ...patch, texture: imageURL, type: 'image' }]);
+      setPatchArray((prevArray) => {
+        // Create a copy of the previous state
+        let temp = [...prevArray];
+        // Check if an item with the same position already exists
+        const index = temp.findIndex((item) => item.position === patch?.position);
+
+        if (index !== -1) {
+          // Replace the existing item
+          temp[index] = { ...patch, texture: imageURL, type: 'image' };
+        } else {
+          // Add a new item
+          temp.push({ ...patch, texture: imageURL, type: 'image' });
+        }
+
+        return temp;
+      });
+
+      event.target.value = null
+      setPatch(null);
+    }
+  };
+  const handleTextInput = (e) => {
+    const value = e.target.value
+    if (value.length > 3) {
+      e.preventDefault()
+    } else {
+      setPatch({ ...patch, text: e.target.value })
+    }
+  }
   return (
     <>
       <main>
@@ -351,6 +383,12 @@ const App = () => {
                                   <img src={letterIcon} alt="" />
                                 </label>
                               </li>
+                              <li>
+                                <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'upload' })} id="patch-upload" />
+                                <label for="patch-upload">
+                                  <img src={uploadIcon} alt="" />
+                                </label>
+                              </li>
                             </ul>
                           </div>}
                           {patch?.type == 'image' ? <div className="option-values">
@@ -381,16 +419,19 @@ const App = () => {
                                 </label>
                               </li>
                             </ul>
-                          </div> : patch?.type == 'text' && <div className='input-patch'>
-                            <input type="text" onChange={(e) => {
-                              const value = e.target.value
-                              if (value.length > 3) {
-                                e.preventDefault()
-                              } else {
-                                setPatch({ ...patch, text: e.target.value })
-                              }
-                            }} />
-                            <button onClick={addToPatchArray}>Add</button>
+                          </div> : patch?.type == 'text' ? <>
+                              <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <div className='input-patch'>
+                              <input type="text" placeholder='upto 3 character' onChange={handleTextInput} maxLength={3} />
+                              <button onClick={addToPatchArray}>Add</button>
+                            </div>
+                          </> : patch?.type == 'upload' && <div className='upload-patch'>
+                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <div className="upload-field">
+                              <input type="file" onChange={handlePathUpload} />
+                              <h5>Drop Your Image, or browse</h5>
+                              <h6>Supports: JPG, PNG</h6>
+                            </div>
                           </div>}
                         </div>
                       </div>
