@@ -8,6 +8,8 @@ import ProductViewer from './components/ProductModel'
 import { IoChevronBack } from "react-icons/io5";
 
 // images
+import patchIcon from './assets/images/patches/patch-icon.jpg'
+import letterIcon from './assets/images/patches/letter-icon.png'
 import leftChestPatch from './assets/images/left-chest.svg'
 import rightChestPatch from './assets/images/right-chest.svg'
 import byronCollar from './assets/images/byron-collar.svg'
@@ -47,17 +49,19 @@ const App = () => {
     insideLining: '#875b32',
   })
   const [patch, setPatch] = useState({
+
     texture: textureTransparent
   })
 
   const [patchArray, setPatchArray] = useState([
-    // {
-    //   texture: patchBullDog,
-    //   adjustment: {
-    //     position: [-0.5, 0.5, 0.57],
-    //     rotation: [0, -0.45, -0.1]
-    //   }
-    // },
+    {
+      type: 'image',
+      texture: textureTransparent,
+      adjustment: {
+        position: [-0.5, 0.5, 0.57],
+        rotation: [0, -0.45, -0.1]
+      }
+    },
     // {
     //   texture: patchSkull,
     //   adjustment: {
@@ -68,23 +72,39 @@ const App = () => {
   ])
 
   const addToPatchArray = () => {
-    let temp = patchArray
-    temp.push(patch)
-    setPatchArray(temp)
-    setPatch(null)
-  }
+    setPatchArray((prevArray) => {
+      // Create a copy of the previous state
+      let temp = [...prevArray];
+
+      // Check if an item with the same position already exists
+      const index = temp.findIndex((item) => item.position === patch?.position);
+
+      if (index !== -1) {
+        // Replace the existing item
+        temp[index] = patch;
+      } else {
+        // Add a new item
+        temp.push(patch);
+      }
+
+      return temp;
+    });
+
+    setPatch(null);
+  };
+
 
   useEffect(() => {
     // debugger
-    if (patch.position == 'right-chest') {
+    if (patch?.position == 'right-chest') {
       setPatch({
         ...patch,
         adjustment: {
-          position: [-0.5, 0.5, 0.57],
+          position: [-0.5, 0.5, 0.6],
           rotation: [0, -0.5, 0]
         }
       })
-    } else if (patch.position == 'left-chest') {
+    } else if (patch?.position == 'left-chest') {
       setPatch({
         ...patch,
         adjustment: {
@@ -93,7 +113,7 @@ const App = () => {
         }
       })
     }
-  }, [patch.position])
+  }, [patch?.position])
 
   const [activeOption, setActiveOption] = useState(null)
   const [model, setModel] = useState(modelBlack)
@@ -129,11 +149,11 @@ const App = () => {
     setPatch({ ...patch, texture: e.target.value })
   }
 
-  useEffect(()=>{
-    if(patch.adjustment && patch.texture){
+  useEffect(() => {
+    if (patch?.adjustment && patch?.texture) {
       addToPatchArray()
     }
-  },[patch])
+  }, [patch])
 
   return (
     <>
@@ -316,7 +336,24 @@ const App = () => {
                               </label>
                             </li>
                           </ul>}
-                          {patch?.position && <div className="option-values">
+                          {(patch?.position && !patch.type) && <div className="option-values">
+                            <button class="backbtn" onClick={() => setPatch({ ...patch, position: null })}><IoChevronBack /></button>
+                            <ul class="option-images">
+                              <li>
+                                <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'image' })} id="patch-image" />
+                                <label for="patch-image">
+                                  <img src={patchIcon} alt="" />
+                                </label>
+                              </li>
+                              <li>
+                                <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'text' })} id="patch-text" />
+                                <label for="patch-text">
+                                  <img src={letterIcon} alt="" />
+                                </label>
+                              </li>
+                            </ul>
+                          </div>}
+                          {patch?.type == 'image' ? <div className="option-values">
                             <button class="backbtn" onClick={() => setPatch({ ...patch, position: null })}><IoChevronBack /></button>
                             <ul class="option-images">
                               <li>
@@ -344,6 +381,16 @@ const App = () => {
                                 </label>
                               </li>
                             </ul>
+                          </div> : patch?.type == 'text' && <div className='input-patch'>
+                            <input type="text" onChange={(e) => {
+                              const value = e.target.value
+                              if (value.length > 3) {
+                                e.preventDefault()
+                              } else {
+                                setPatch({ ...patch, text: e.target.value })
+                              }
+                            }} />
+                            <button onClick={addToPatchArray}>Add</button>
                           </div>}
                         </div>
                       </div>

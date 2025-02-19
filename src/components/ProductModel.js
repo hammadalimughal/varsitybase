@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useTexture, useGLTF, Decal } from '@react-three/drei';
+import { OrbitControls, useTexture, useGLTF, Text } from '@react-three/drei';
 
 
 const ModelPatch = ({ patch }) => {
     const patchTexture = useTexture(patch?.texture);
     return (
-        <mesh position={patch?.adjustment.position} rotation={patch?.adjustment.rotation} scale={[0.5, 0.5, 0.5]}>
-            <planeGeometry args={[0.8, 0.8]} />
-            <meshStandardMaterial map={patchTexture} transparent />
-        </mesh>
+        <>
+            <mesh position={patch?.adjustment?.position} rotation={patch?.adjustment?.rotation} scale={[0.5, 0.5, 0.5]}>
+                <planeGeometry args={[0.8, 0.8]} />
+                <meshStandardMaterial map={patchTexture} transparent />
+            </mesh>
+        </>
     )
 }
 
@@ -30,7 +32,16 @@ const ProductModel = ({ modelPath, texturePath, patchs }) => {
     scene.position.set(0, -2, 0);
 
     return <>
-        {patchs.length > 0 && <>{patchs.map((item) => <ModelPatch patch={item} />)}</>}
+        {patchs.length > 0 && <>{patchs.map((item) => item.type == 'image' ? <ModelPatch patch={item} /> : <Text
+                position={item?.adjustment?.position} // Adjust position based on model
+                rotation={item?.adjustment?.rotation}
+                fontSize={0.3}
+                color="#fff"
+                anchorX="center"
+                anchorY="middle"
+            >
+                {item?.text}
+            </Text>)}</>}
         <primitive object={scene} scale={2} />;
     </>
 };
