@@ -49,6 +49,52 @@ const App = () => {
   const [patch, setPatch] = useState({
     texture: textureTransparent
   })
+
+  const [patchArray, setPatchArray] = useState([
+    // {
+    //   texture: patchBullDog,
+    //   adjustment: {
+    //     position: [-0.5, 0.5, 0.57],
+    //     rotation: [0, -0.45, -0.1]
+    //   }
+    // },
+    // {
+    //   texture: patchSkull,
+    //   adjustment: {
+    //     position: [0.5, 0.5, 0.57],
+    //     rotation: [0, 0.5, 0]
+    //   }
+    // }
+  ])
+
+  const addToPatchArray = () => {
+    let temp = patchArray
+    temp.push(patch)
+    setPatchArray(temp)
+    setPatch(null)
+  }
+
+  useEffect(() => {
+    // debugger
+    if (patch.position == 'right-chest') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [-0.5, 0.5, 0.57],
+          rotation: [0, -0.5, 0]
+        }
+      })
+    } else if (patch.position == 'left-chest') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [0.5, 0.5, 0.57],
+          rotation: [0, 0.5, 0]
+        }
+      })
+    }
+  }, [patch.position])
+
   const [activeOption, setActiveOption] = useState(null)
   const [model, setModel] = useState(modelBlack)
   const [texture, setTexture] = useState(textureTransparent)
@@ -82,6 +128,12 @@ const App = () => {
   const handlePatch = (e) => {
     setPatch({ ...patch, texture: e.target.value })
   }
+
+  useEffect(()=>{
+    if(patch.adjustment && patch.texture){
+      addToPatchArray()
+    }
+  },[patch])
 
   return (
     <>
@@ -304,7 +356,7 @@ const App = () => {
                   <ProductViewer
                     key={model}
                     // texturePath={texture} 
-                    modelPath={model} patch={patch} />
+                    modelPath={model} patchs={patchArray} />
                 </div>
               </div>
             </div>

@@ -1,22 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useTexture, useGLTF } from '@react-three/drei';
+import { OrbitControls, useTexture, useGLTF, Decal } from '@react-three/drei';
 
-const ProductModel = ({ modelPath, texturePath, patch }) => {
-    console.log('patch', patch)
-    const { scene } = useGLTF(modelPath);
-    scene.position.set(0, -2, 0);
+
+const ModelPatch = ({ patch }) => {
     const patchTexture = useTexture(patch?.texture);
-    return <>
-        <primitive object={scene} scale={2} />; // Scale down the model to fit
-        <mesh position={[-0.5, 0.5, 0.6]} rotation={[0, 0, 0]} scale={[0.5, 0.5, 0.5]}>
-            <planeGeometry args={[1, 1]} />
+    return (
+        <mesh position={patch?.adjustment.position} rotation={patch?.adjustment.rotation} scale={[0.5, 0.5, 0.5]}>
+            <planeGeometry args={[0.8, 0.8]} />
             <meshStandardMaterial map={patchTexture} transparent />
         </mesh>
+    )
+}
+
+const ProductModel = ({ modelPath, texturePath, patchs }) => {
+    console.log('patch', patchs)
+    const { scene } = useGLTF(modelPath);
+    const patchTexture = useTexture(patchs[0]?.texture);
+    useEffect(() => {
+        scene.traverse((child) => {
+            console.log(child);  // Debugging: Check names in console
+            console.log(child.name);  // Debugging: Check names in console
+            // if(child.material.name == 'left-pocket'){
+            //     child.material.map = patchTexture;  
+            //     child.material.needsUpdate = true;
+            // }
+        });
+    }, [scene]);
+    scene.position.set(0, -2, 0);
+
+    return <>
+        {patchs.length > 0 && <>{patchs.map((item) => <ModelPatch patch={item} />)}</>}
+        <primitive object={scene} scale={2} />;
     </>
 };
 
-const ProductViewer = ({ modelPath, texturePath, patch }) => {
+const ProductViewer = ({ modelPath, texturePath, patchs }) => {
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -46,8 +65,8 @@ const ProductViewer = ({ modelPath, texturePath, patch }) => {
             >
                 <ambientLight intensity={0.5} />
                 <directionalLight position={[2, 2, 5]} />
-                <ProductModel modelPath={modelPath} texturePath={texturePath} patch={patch} />
-                <OrbitControls enableZoom={false} />
+                <ProductModel modelPath={modelPath} texturePath={texturePath} patchs={patchs} />
+                <OrbitControls enableZoom={true} />
             </Canvas>
         </div>
     );
