@@ -16,7 +16,13 @@ const Loader = () => {
 const ModelPatch = ({ patch }) => {
     const patchTexture = useTexture(patch?.texture);
     return (
-        <mesh position={patch?.adjustment?.position} rotation={patch?.adjustment?.rotation} scale={[0.5, 0.5, 0.5]}>
+        <mesh
+            position={patch?.adjustment?.position}
+            // position={[1.55, 0.5, -0.2]}
+            // rotation={patch?.adjustment?.rotation}
+            rotation={[-0.2, 1.6, 0]}
+            scale={[0.5, 0.5, 0.5]}
+        >
             <planeGeometry args={[0.8, 0.8]} />
             <meshStandardMaterial map={patchTexture} transparent />
         </mesh>

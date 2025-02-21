@@ -7,12 +7,25 @@ import ProductViewer from './components/ProductModel'
 
 import { IoChevronBack } from "react-icons/io5";
 
+// design and patches
+import aboveLeftElbowPatch from './assets/images/design-patches/Above-left-elbow.svg'
+import aboveLeftPocketPatch from './assets/images/design-patches/Above-left-pocket.svg'
+import aboveRightElbowPatch from './assets/images/design-patches/Above-right-elbow.svg'
+import backPatch from './assets/images/design-patches/Back.svg'
+import belowLeftElbowPatch from './assets/images/design-patches/Below-left-elbow.svg'
+import belowLeftPocketPatch from './assets/images/design-patches/Below-left-pocket.svg'
+import belowRightElbowPatch from './assets/images/design-patches/Below-right-elbow.svg'
+import bottomLeftSleevePatch from './assets/images/design-patches/Bottom-of-left-sleeve.svg'
+import bottomRightSleevePatch from './assets/images/design-patches/Bottom-of-right-sleeve.svg'
+import leftChestPatch from './assets/images/design-patches/Left-Chest.svg'
+import leftShoulderPatch from './assets/images/design-patches/Left-shoulder.svg'
+import rightChestPatch from './assets/images/design-patches/Right-Chest.svg'
+import rightShoulderPatch from './assets/images/design-patches/Right-shoulder.svg'
+
 // images
 import patchIcon from './assets/images/patches/patch-icon.jpg'
 import letterIcon from './assets/images/patches/letter-icon.png'
 import uploadIcon from './assets/images/patches/upload-icon.png'
-import leftChestPatch from './assets/images/left-chest.svg'
-import rightChestPatch from './assets/images/right-chest.svg'
 import byronCollar from './assets/images/byron-collar.svg'
 import hoodieCollar from './assets/images/hoodie-collar.svg'
 import regularCollar from './assets/images/regular-collar.svg'
@@ -91,7 +104,7 @@ const App = () => {
       return temp;
     });
 
-    setPatch(null);
+    // setPatch(null);
   };
 
 
@@ -110,6 +123,15 @@ const App = () => {
         adjustment: {
           position: [0.5, 0.5, 0.57],
           rotation: [0, 0.5, 0]
+        }
+      })
+
+    } else if (patch?.position == 'above-left-elbow') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [1.55, 0.5, -0.2],
+          rotation: [-0.3, 1.7, 0]
         }
       })
     }
@@ -176,7 +198,7 @@ const App = () => {
       });
 
       event.target.value = null
-      setPatch(null);
+      // setPatch(null);
     }
   };
   const handleTextInput = (e) => {
@@ -354,22 +376,88 @@ const App = () => {
                         <div class="option-values" id="collar-content">
                           {!patch?.position && <ul class="option-images">
                             <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'right-chest' })} id="patch-right-chest" />
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'right-chest' })}
+                                id="patch-right-chest" />
                               <label for="patch-right-chest">
                                 <img src={rightChestPatch} alt="" />
                                 <span class="txt">Right Chest</span>
                               </label>
                             </li>
                             <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'left-chest' })} id="collar-byron" value='byron' />
-                              <label for="collar-byron">
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'left-chest' })}
+                                id="patch-left-chest" value='byron' />
+                              <label for="patch-left-chest">
                                 <img src={leftChestPatch} alt="" />
                                 <span class="txt">Left Chest</span>
                               </label>
                             </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'above-left-elbow' })} id="patch-above-left-elbow" value='byron' />
+                              <label for="patch-above-left-elbow">
+                                <img src={aboveLeftElbowPatch} alt="" />
+                                <span class="txt">Above Left Elbow</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'above-right-elbow' })} id="above-right-elbow-patch" value='byron' />
+                              <label for="above-right-elbow-patch">
+                                <img src={aboveRightElbowPatch} alt="" />
+                                <span class="txt">Above Right Elbow</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'back' })}
+                                id="back-patch" value='byron' />
+                              <label for="back-patch">
+                                <img src={backPatch} alt="" />
+                                <span class="txt">Back</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'below-left-elbow' })} id="below-left-elbow-patch" value='byron' />
+                              <label for="below-left-elbow-patch">
+                                <img src={belowLeftElbowPatch} alt="" />
+                                <span class="txt">Below Left Elbow</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'below-right-elbow' })} id="below-right-elbow-patch" value='byron' />
+                              <label for="below-right-elbow-patch">
+                                <img src={belowRightElbowPatch} alt="" />
+                                <span class="txt">Below Right Elbow</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'bottom-left-sleeve' })} id="bottom-left-sleeve-patch" value='byron' />
+                              <label for="bottom-left-sleeve-patch">
+                                <img src={bottomLeftSleevePatch} alt="" />
+                                <span class="txt">Bottom Left Sleeve</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'bottom-right-sleeve' })} id="bottom-right-sleeve-patch" value='byron' />
+                              <label for="bottom-right-sleeve-patch">
+                                <img src={bottomRightSleevePatch} alt="" />
+                                <span class="txt">Bottom Right Sleeve</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'left-shoulder' })} id="left-shoulder-patch" value='byron' />
+                              <label for="left-shoulder-patch">
+                                <img src={leftShoulderPatch} alt="" />
+                                <span class="txt">Left Shoulder</span>
+                              </label>
+                            </li>
+                            <li>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'right-shoulder' })} id="right-shoulder-patch" value='byron' />
+                              <label for="right-shoulder-patch">
+                                <img src={rightShoulderPatch} alt="" />
+                                <span class="txt">Right Shoulder</span>
+                              </label>
+                            </li>
                           </ul>}
                           {(patch?.position && !patch.type) && <div className="option-values">
-                            <button class="backbtn" onClick={() => setPatch({ ...patch, position: null })}><IoChevronBack /></button>
+                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <ul class="option-images">
                               <li>
                                 <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'image' })} id="patch-image" />
@@ -392,7 +480,7 @@ const App = () => {
                             </ul>
                           </div>}
                           {patch?.type == 'image' ? <div className="option-values">
-                            <button class="backbtn" onClick={() => setPatch({ ...patch, position: null })}><IoChevronBack /></button>
+                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <ul class="option-images">
                               <li>
                                 <input type="radio" name="patch" value={patchBullDog} onChange={handlePatch} id="patch-bull-dog" />
@@ -420,7 +508,7 @@ const App = () => {
                               </li>
                             </ul>
                           </div> : patch?.type == 'text' ? <>
-                              <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <div className='input-patch'>
                               <input type="text" placeholder='upto 3 character' onChange={handleTextInput} maxLength={3} />
                               <button onClick={addToPatchArray}>Add</button>
