@@ -137,11 +137,55 @@ const App = () => {
           scale: [0.5, 0.5, 0.5]
         }
       })
+    } else if (patch?.position == 'below-left-elbow') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [1.72, -0.1, -0.2],
+          rotation: [-0.3, 1.74, 0],
+          scale: [0.5, 0.5, 0.5]
+        }
+      })
+    } else if (patch?.position == 'bottom-left-sleeve') {
+      // setPatch({
+      //   ...patch,
+      //   adjustment: {
+      //     position: [-1.9, -1.3, -0],
+      //     rotation: [0.4, 4.5, 0],
+      //     scale: [0.5, 0.5, 0.5]
+      //   }
+      // })
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [1.9, -1.3, -0],
+          rotation: [-0.3, 1.74, 0],
+          scale: [0.5, 0.5, 0.5]
+        }
+      })
     } else if (patch?.position == 'above-right-elbow') {
       setPatch({
         ...patch,
         adjustment: {
           position: [-1.55, 0.5, -0.2],
+          rotation: [0.4, 4.5, 0],
+          scale: [0.5, 0.5, 0.5]
+        }
+      })
+    } else if (patch?.position == 'below-right-elbow') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [-1.72, -0.1, -0.2],
+          rotation: [0.4, 4.5, 0],
+          scale: [0.5, 0.5, 0.5]
+        }
+      })
+    } else if (patch?.position == 'bottom-right-sleeve') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [-1.9, -1.3, -0],
           rotation: [0.4, 4.5, 0],
           scale: [0.5, 0.5, 0.5]
         }
