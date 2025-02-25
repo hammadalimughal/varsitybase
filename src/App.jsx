@@ -114,7 +114,8 @@ const App = () => {
         ...patch,
         adjustment: {
           position: [-0.5, 0.5, 0.6],
-          rotation: [0, -0.5, 0]
+          rotation: [0, -0.5, 0],
+          scale: [0.5, 0.5, 0.5]
         }
       })
     } else if (patch?.position == 'left-chest') {
@@ -122,7 +123,8 @@ const App = () => {
         ...patch,
         adjustment: {
           position: [0.5, 0.5, 0.57],
-          rotation: [0, 0.5, 0]
+          rotation: [0, 0.5, 0],
+          scale: [0.5, 0.5, 0.5]
         }
       })
 
@@ -131,7 +133,26 @@ const App = () => {
         ...patch,
         adjustment: {
           position: [1.55, 0.5, -0.2],
-          rotation: [-0.3, 1.7, 0]
+          rotation: [-0.4, 1.7, 0],
+          scale: [0.5, 0.5, 0.5]
+        }
+      })
+    } else if (patch?.position == 'above-right-elbow') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [-1.55, 0.5, -0.2],
+          rotation: [0.4, 4.5, 0],
+          scale: [0.5, 0.5, 0.5]
+        }
+      })
+    } else if (patch?.position == 'back') {
+      setPatch({
+        ...patch,
+        adjustment: {
+          position: [0, 0, -0.8],
+          rotation: [0, 3.1, 0],
+          scale: [1.7, 1.7, 1.7]
         }
       })
     }
@@ -441,7 +462,7 @@ const App = () => {
                                 <span class="txt">Bottom Right Sleeve</span>
                               </label>
                             </li>
-                            <li>
+                            {/* <li>
                               <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'left-shoulder' })} id="left-shoulder-patch" value='byron' />
                               <label for="left-shoulder-patch">
                                 <img src={leftShoulderPatch} alt="" />
@@ -454,7 +475,7 @@ const App = () => {
                                 <img src={rightShoulderPatch} alt="" />
                                 <span class="txt">Right Shoulder</span>
                               </label>
-                            </li>
+                            </li> */}
                           </ul>}
                           {(patch?.position && !patch.type) && <div className="option-values">
                             <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>

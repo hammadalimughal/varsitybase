@@ -18,10 +18,11 @@ const ModelPatch = ({ patch }) => {
     return (
         <mesh
             position={patch?.adjustment?.position}
-            // position={[1.55, 0.5, -0.2]}
-            // rotation={patch?.adjustment?.rotation}
-            rotation={[-0.2, 1.6, 0]}
-            scale={[0.5, 0.5, 0.5]}
+            // position={[-1.55, 0.5, -0.2]}
+            rotation={patch?.adjustment?.rotation}
+            // rotation={[0.4, 4.5, 0]}
+            // scale={[1.7, 1.7, 1.7]}
+            scale={patch?.adjustment?.scale}
         >
             <planeGeometry args={[0.8, 0.8]} />
             <meshStandardMaterial map={patchTexture} transparent />
