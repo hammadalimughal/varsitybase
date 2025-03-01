@@ -127,12 +127,15 @@ button:focus {
 
 .jacket-builder .builder-options .option-keys li button .option {
   color: #64748b;
-  font-size: 14px;
+  font-size: .75rem;
+  line-height: 1rem;
   margin-bottom: 5px;
 }
 
 .jacket-builder .builder-options .option-keys li button .value {
   font-size: 18px;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  text-transform: capitalize;
 }
 
 .jacket-builder .builder-options .option-keys li button .thumb {
@@ -179,15 +182,29 @@ button:focus {
 
 .jacket-builder .option-values h6 {
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.jacket-builder .option-values .current-val {
+  text-align: center;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .jacket-builder .option-values .option-images {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 10px;
@@ -197,13 +214,26 @@ button:focus {
   width: 30%;
   text-align: center;
 }
+.jacket-builder .patch-tab .option-values .option-images li{
+  width: 23%;
+}
+.jacket-builder .patch-tab .option-values .option-images li img{
+  height: auto !important;
+}
 
+.jacket-builder .option-values .option-images li .txt{
+  margin-top: .25rem;
+  display: block;
+  text-align: center;
+  font-size: .75rem;
+  line-height: 1rem;
+}
 .jacket-builder .option-values .option-images li input {
   display: none;
 }
 
 .jacket-builder .option-values .option-images li img {
-  height: 70px;
+  height: 130px;
   width: 100%;
   object-fit: contain;
   border-radius: 5px;
@@ -232,10 +262,12 @@ button:focus {
   padding: 7px;
   cursor: pointer;
 }
-.jacket-builder .option-values .option-colors li input{
+
+.jacket-builder .option-values .option-colors li input {
   display: none;
 }
-.jacket-builder .option-values .option-colors li input:checked + label{
+
+.jacket-builder .option-values .option-colors li input:checked+label {
   border-color: #000;
 }
 
@@ -246,24 +278,28 @@ button:focus {
   border-radius: 50%;
 }
 
-.model-wrapper{
+.model-wrapper {
   min-height: 95vh;
 }
-.model-wrapper .model-viewer{
+
+.model-wrapper .model-viewer {
   height: 100%;
   width: 100%;
 }
-.upload-patch{
+
+.upload-patch {
   position: relative;
   padding-top: 30px;
 }
-.upload-patch .backbtn{
+
+.upload-patch .backbtn {
   position: absolute;
   left: 0;
   top: 0;
   z-index: 9;
 }
-.upload-field{
+
+.upload-field {
   margin-top: 30px;
   position: relative;
   border: 1px dashed rgba(0, 0, 0, 0.5);
@@ -275,11 +311,13 @@ button:focus {
   padding: 30px;
   background-color: #f1f5f9;
 }
+
 .upload-field h5,
-.upload-field h6{
+.upload-field h6 {
   line-height: 1;
 }
-.upload-field input{
+
+.upload-field input {
   position: absolute;
   left: 0;
   right: 0;
@@ -289,15 +327,16 @@ button:focus {
   opacity: 0;
 }
 
-.model-loading{
+.model-loading {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  
+
 }
+
 /* .model-loading h6{
   position: absolute;
   left: 0;
@@ -305,13 +344,15 @@ button:focus {
   bottom: 30px;
   text-align: center;
 } */
-.model-loading img{
+.model-loading img {
   max-height: 75vh;
 }
-.model-loading canvas{
+
+.model-loading canvas {
   height: 80vh !important;
 }
-.input-patch{
+
+.input-patch {
   border: 1px solid rgba(0, 0, 0, 0.5);
   padding: 5px;
   border-radius: 5px;
@@ -320,12 +361,14 @@ button:focus {
   justify-content: space-between;
   margin-top: 50px;
 }
-.input-patch input{
+
+.input-patch input {
   border: none;
   outline: none;
   background-color: transparent;
 }
-.input-patch button{
+
+.input-patch button {
   background-color: #64748b;
   color: #fff;
   border: none;

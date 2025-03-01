@@ -40,7 +40,7 @@ const ProductModel = ({ modelPath, patchs }) => {
         });
     }, [scene]);
 
-    scene.position.set(0, -2, 0);
+    scene.position.set(0, -2.5, 0);
 
     return (
         <>
@@ -61,7 +61,7 @@ const ProductModel = ({ modelPath, patchs }) => {
                     </Text>
                 )
             ))}
-            <primitive object={scene} scale={2} />;
+            <primitive object={scene} scale={3} />;
         </>
     );
 };

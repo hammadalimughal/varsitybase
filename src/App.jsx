@@ -338,9 +338,10 @@ const App = () => {
                         {activeOption == 'collar' && <div class="option-values" id="collar-content">
                           <button class="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Collar</h6>
+                          <h6 className="current-val">{formData.collar}</h6>
                           <ul class="option-images">
                             <li>
-                              <input type="radio" name="collar" onChange={handleValue} id="collar-regular" />
+                              <input type="radio" name="collar" value='regular' onChange={handleValue} id="collar-regular" />
                               <label for="collar-regular">
                                 <img src={regularCollar} alt="" />
                                 <span class="txt">Regular</span>
@@ -372,6 +373,7 @@ const App = () => {
                         {activeOption === 'body' && <div class="option-values" id="body-color-content">
                           <button class="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Body</h6>
+                          <h6 className='current-val'>Brown Wool</h6>
                           <ul class="option-colors">
                             <li>
                               <input value="linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)'} onChange={handleValue} id="body-color-000000" />
@@ -436,7 +438,7 @@ const App = () => {
                           </ul>
                         </div>}
                       </div>
-                      <div class="tab-pane fade" id="design" role="tabpanel" aria-labelledby="design-tab"
+                      <div class="tab-pane patch-tab fade" id="design" role="tabpanel" aria-labelledby="design-tab"
                         tabindex="0">
                         <div class="option-values" id="collar-content">
                           {!patch?.position && <ul class="option-images">
