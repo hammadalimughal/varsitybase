@@ -188,6 +188,7 @@ button:focus {
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 18px;
   font-weight: 700;
+  text-transform: capitalize;
 }
 
 .jacket-builder .option-values .current-val {

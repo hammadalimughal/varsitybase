@@ -23,9 +23,11 @@ import rightChestPatch from './assets/images/design-patches/Right-Chest.svg'
 import rightShoulderPatch from './assets/images/design-patches/Right-shoulder.svg'
 
 // images
-import patchIcon from './assets/images/patches/patch-icon.jpg'
-import letterIcon from './assets/images/patches/letter-icon.png'
-import uploadIcon from './assets/images/patches/upload-icon.png'
+import myPatchIcon from './assets/images/patches/types/My-Patches.svg'
+import aiPatchIcon from './assets/images/patches/types/AI-1.svg'
+import patchIcon from './assets/images/patches/types/Patch.svg'
+import letterIcon from './assets/images/patches/types/Letters.svg'
+import uploadIcon from './assets/images/patches/types/Upload.svg'
 import byronCollar from './assets/images/byron-collar.svg'
 import hoodieCollar from './assets/images/hoodie-collar.svg'
 import regularCollar from './assets/images/regular-collar.svg'
@@ -37,7 +39,8 @@ import sailorCollar from './assets/images/sailor-collar.svg'
 import modelOrange from './assets/models/JACK_Orange.glb'
 import modelBlackOrange from './assets/models/JACK_BlackOrange.glb'
 import modelRed from './assets/models/JACK_red.glb'
-import modelBlack from './assets/models/JACK_black.glb'
+// import modelBlack from './assets/models/JACK_black.glb'
+import modelBlack from './assets/models/test.glb'
 import modelBlue from './assets/models/JACK blue.glb'
 
 import patchBullDog from './assets/images/patches/bull-dog.png'
@@ -523,25 +526,43 @@ const App = () => {
                               </label>
                             </li> */}
                           </ul>}
-                          {(patch?.position && !patch.type) && <div className="option-values">
+                          {(patch?.position && !patch.type) && <div>
                             <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <h6>{patch.position.split('-').join(' ')}</h6>
+                            <h6 class="current-val">byron</h6>
                             <ul class="option-images">
                               <li>
-                                <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'image' })} id="patch-image" />
-                                <label for="patch-image">
-                                  <img src={patchIcon} alt="" />
+                                <input type="radio" name="patch-type" id="my-patch-image" />
+                                <label for="my-patch-image">
+                                  <img src={myPatchIcon} alt="" />
                                 </label>
+                                <span className="txt">My Patches</span>
+                              </li>
+                              <li>
+                                <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'upload' })} id="patch-upload" />
+                                <label for="patch-upload">
+                                  <img src={uploadIcon} alt="" />
+                                </label>
+                                <span className="txt">Upload</span>
+                              </li>
+                              <li>
+                                <input type="radio" name="patch-type" id="ai-patch" />
+                                <label for="ai-patch">
+                                  <img src={aiPatchIcon} alt="" />
+                                </label>
+                                <span className="txt">AI Assisted</span>
                               </li>
                               <li>
                                 <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'text' })} id="patch-text" />
                                 <label for="patch-text">
                                   <img src={letterIcon} alt="" />
                                 </label>
+
                               </li>
                               <li>
-                                <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'upload' })} id="patch-upload" />
-                                <label for="patch-upload">
-                                  <img src={uploadIcon} alt="" />
+                                <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'image' })} id="patch-image" />
+                                <label for="patch-image">
+                                  <img src={patchIcon} alt="" />
                                 </label>
                               </li>
                             </ul>

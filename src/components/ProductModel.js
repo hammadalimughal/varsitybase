@@ -36,7 +36,21 @@ const ProductModel = ({ modelPath, patchs }) => {
 
     useEffect(() => {
         scene.traverse((child) => {
-            console.log("Mesh Name:", child.name);
+            if(child.isMesh){
+                console.log("Mesh Name: ", child.name);
+                if(child.name == 'model001'){
+                    console.log("Sleeves:", child.name);
+                    child.material.color.set("green");
+                }
+                // if(child.name == 'model003'){
+                //     console.log("Sleeves:", child.name);
+                //     child.material.color.set("blue");
+                // }
+                // if(child.name == 'left-pocket'){
+                //     console.log("Sleeves:", child.name);
+                //     child.material.color.set("purple");
+                // }
+            }
         });
     }, [scene]);
 
