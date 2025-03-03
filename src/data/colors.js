@@ -1,4 +1,4 @@
-const bodyData = [
+const colors = [
   {
     name: "Ivory",
     hex: "#FFFFF0"
@@ -129,4 +129,4 @@ const bodyData = [
   }
 ]
 
-export default bodyData
+export default colors

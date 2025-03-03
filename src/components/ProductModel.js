@@ -34,8 +34,9 @@ const ModelPatch = ({ patch }) => {
     );
 };
 
-const ProductModel = ({ modelPath, patchs }) => {
+const ProductModel = ({ modelPath, patchs, formData }) => {
     console.log('patch', patchs);
+    console.log('formData', formData);
     const { scene } = useGLTF(modelPath);
     const textures = useTexture(patchs.map(patch => patch.texture));
 
@@ -52,10 +53,11 @@ const ProductModel = ({ modelPath, patchs }) => {
                 // } else {
                 //     child.material.map = textures[1];
                 // }
-                // if(child.name == 'model001'){
-                //     console.log("Sleeves:", child.name);
-                //     child.material.color.set("#fff");
-                // }
+                if(child.name == 'model001'){
+                    console.log("Sleeves:", child.name);
+                    child.material.color.set(formData?.sleeves?.hex);
+                    // child.material.color.set('red');
+                }
                 // if(child.name == 'model003'){
                 //     console.log("Sleeves:", child.name);
                 //     child.material.color.set("blue");
@@ -66,7 +68,7 @@ const ProductModel = ({ modelPath, patchs }) => {
                 // }
             }
         });
-    }, [scene]);
+    }, [scene,formData]);
     // useEffect(() => {
     //     patchs.forEach((patch, index) => {
     //         if (index) {
@@ -128,14 +130,14 @@ const ProductModel = ({ modelPath, patchs }) => {
     );
 };
 
-const ProductViewer = ({ modelPath, patchs }) => {
+const ProductViewer = ({ modelPath, patchs, formData }) => {
     return (
         <div style={{ height: '100%', width: '100%', position: 'relative' }}>
             <Suspense fallback={<Loader />}>
                 <Canvas style={{ width: '100%', height: '100%', display: 'block' }}>
                     <ambientLight intensity={0.5} />
                     <directionalLight position={[2, 2, 5]} />
-                    <ProductModel modelPath={modelPath} patchs={patchs} />
+                    <ProductModel modelPath={modelPath} patchs={patchs} formData={formData} />
                     <OrbitControls enableZoom={false} />
                 </Canvas>
             </Suspense>

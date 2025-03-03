@@ -8,7 +8,7 @@ import ProductViewer from './components/ProductModel'
 import { IoChevronBack } from "react-icons/io5";
 
 // data
-import bodyData from './data/body'
+import colorsData from './data/colors'
 
 // images
 import myPatchIcon from './assets/images/patches/types/My-Patches.svg'
@@ -24,13 +24,13 @@ import sailorCollar from './assets/images/sailor-collar.svg'
 
 // 3d model
 // import model from './assets/models/base.glb'
-import modelOrange from './assets/models/JACK_Orange.glb'
-import modelBlackOrange from './assets/models/JACK_BlackOrange.glb'
-import modelRed from './assets/models/JACK_red.glb'
-import modelBlack from './assets/models/JACK_black.glb'
+// import modelOrange from './assets/models/JACK_Orange.glb'
+// import modelBlackOrange from './assets/models/JACK_BlackOrange.glb'
+// import modelRed from './assets/models/JACK_red.glb'
+// import modelBlack from './assets/models/JACK_black.glb'
 // import modelBlack from './assets/models/edited.glb'
-// import modelBlack from './assets/models/test.glb'
-import modelBlue from './assets/models/JACK blue.glb'
+import modelBlack from './assets/models/test.glb'
+// import modelBlue from './assets/models/JACK blue.glb'
 
 import patchBullDog from './assets/images/patches/bull-dog.png'
 import patchMasks from './assets/images/patches/masks.png'
@@ -39,25 +39,19 @@ import patchUsFlag from './assets/images/patches/us-flag.png'
 
 // textures
 import textureTransparent from './assets/models/transparent.png'
-import texture1 from './assets/models/texture.png'
-import texture2 from './assets/models/texture_diffuse.png'
-import texture3 from './assets/models/texture_metallic.png'
-import texture4 from './assets/models/texture_normal.png'
-import texture5 from './assets/models/texture_pbr.png'
-import texture6 from './assets/models/texture-orange.png'
-import texture7 from './assets/models/texture_white.png'
 import patchPositions from './data/patchPosition'
 
 
 const App = () => {
   const [formData, setFormData] = useState({
     collar: 'byron',
-    body: bodyData[0],
-    insideLining: bodyData[2]
+    body: colorsData[0],
+    sleeves: colorsData[6],
+    insideLining: colorsData[2]
   })
   const [activeOption, setActiveOption] = useState(null)
   const [model, setModel] = useState(modelBlack)
-  const [texture, setTexture] = useState(textureTransparent)
+  // const [texture, setTexture] = useState(textureTransparent)
   const [patch, setPatch] = useState(null)
 
   const [patchArray, setPatchArray] = useState([
@@ -299,6 +293,18 @@ const App = () => {
                             </button>
                           </li>
                           <li>
+                            <button data-target="#body-color-content" onClick={() => setActiveOption('sleeves')}>
+                              <span className="thumb-color">
+                                <span className="color"
+                                  style={{ backgroundColor: formData.sleeves?.hex }}></span>
+                              </span>
+                              <div>
+                                <h6 className="option">Sleeves</h6>
+                                <h4 className="value">{formData.sleeves?.name}</h4>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
                             <button onClick={() => setActiveOption('insideLining')}>
                               <span className="thumb-color">
                                 <span className="color" style={{ backgroundColor: formData.insideLining?.hex }}></span>
@@ -350,7 +356,7 @@ const App = () => {
                           <h6>Choose Body</h6>
                           <h6 className='current-val'>{formData.body?.name}</h6>
                           <ul className="option-colors">
-                            {bodyData.map((item, ind) => (
+                            {colorsData.map((item, ind) => (
                               <li key={ind}>
                                 <input
                                   value={JSON.stringify(item)}
@@ -367,12 +373,34 @@ const App = () => {
                             ))}
                           </ul>
                         </div>}
+                        {activeOption === 'sleeves' && <div className="option-values" id="sleeves-color-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                          <h6>Choose Sleeves</h6>
+                          <h6 className='current-val'>{formData.sleeves?.name}</h6>
+                          <ul className="option-colors">
+                            {colorsData.map((item, ind) => (
+                              <li key={ind}>
+                                <input
+                                  value={JSON.stringify(item)}
+                                  type="radio"
+                                  name="sleeves"
+                                  checked={JSON.stringify(formData.sleeves) === JSON.stringify(item)}
+                                  onChange={handleValue}
+                                  id={`body-sleeves-${item.name.replaceAll(' ', '')}`}
+                                />
+                                <label htmlFor={`body-sleeves-${item.name.replaceAll(' ', '')}`}>
+                                  <span className="color" style={{ background: item.hex }}></span>
+                                </label>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>}
                         {activeOption == 'insideLining' && <div className="option-values" id="inside-lining-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Inside Lining</h6>
                           <h6 className='current-val'>{formData.insideLining?.name}</h6>
                           <ul className="option-colors">
-                            {bodyData.map((item, ind) => (
+                            {colorsData.map((item, ind) => (
                               <li key={ind}>
                                 <input
                                   value={JSON.stringify(item)}
@@ -496,8 +524,9 @@ const App = () => {
               <div className="col-lg-8 col-12 panel">
                 <div className="model-wrapper h-100">
                   <ProductViewer
-                    key={model}
+                    key={formData}
                     // texturePath={texture} 
+                    formData={formData}
                     modelPath={model} patchs={patchArray} />
                 </div>
               </div>
