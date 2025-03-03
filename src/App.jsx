@@ -7,20 +7,8 @@ import ProductViewer from './components/ProductModel'
 
 import { IoChevronBack } from "react-icons/io5";
 
-// design and patches
-import aboveLeftElbowPatch from './assets/images/design-patches/Above-left-elbow.svg'
-import aboveLeftPocketPatch from './assets/images/design-patches/Above-left-pocket.svg'
-import aboveRightElbowPatch from './assets/images/design-patches/Above-right-elbow.svg'
-import backPatch from './assets/images/design-patches/Back.svg'
-import belowLeftElbowPatch from './assets/images/design-patches/Below-left-elbow.svg'
-import belowLeftPocketPatch from './assets/images/design-patches/Below-left-pocket.svg'
-import belowRightElbowPatch from './assets/images/design-patches/Below-right-elbow.svg'
-import bottomLeftSleevePatch from './assets/images/design-patches/Bottom-of-left-sleeve.svg'
-import bottomRightSleevePatch from './assets/images/design-patches/Bottom-of-right-sleeve.svg'
-import leftChestPatch from './assets/images/design-patches/Left-Chest.svg'
-import leftShoulderPatch from './assets/images/design-patches/Left-shoulder.svg'
-import rightChestPatch from './assets/images/design-patches/Right-Chest.svg'
-import rightShoulderPatch from './assets/images/design-patches/Right-shoulder.svg'
+// data
+import bodyData from './data/body'
 
 // images
 import myPatchIcon from './assets/images/patches/types/My-Patches.svg'
@@ -39,8 +27,9 @@ import sailorCollar from './assets/images/sailor-collar.svg'
 import modelOrange from './assets/models/JACK_Orange.glb'
 import modelBlackOrange from './assets/models/JACK_BlackOrange.glb'
 import modelRed from './assets/models/JACK_red.glb'
-// import modelBlack from './assets/models/JACK_black.glb'
-import modelBlack from './assets/models/test.glb'
+import modelBlack from './assets/models/JACK_black.glb'
+// import modelBlack from './assets/models/edited.glb'
+// import modelBlack from './assets/models/test.glb'
 import modelBlue from './assets/models/JACK blue.glb'
 
 import patchBullDog from './assets/images/patches/bull-dog.png'
@@ -57,13 +46,14 @@ import texture4 from './assets/models/texture_normal.png'
 import texture5 from './assets/models/texture_pbr.png'
 import texture6 from './assets/models/texture-orange.png'
 import texture7 from './assets/models/texture_white.png'
+import patchPositions from './data/patchPosition'
 
 
 const App = () => {
   const [formData, setFormData] = useState({
     collar: 'byron',
-    body: '#f2e7d5',
-    insideLining: '#875b32',
+    body: bodyData[0],
+    insideLining: bodyData[2]
   })
   const [activeOption, setActiveOption] = useState(null)
   const [model, setModel] = useState(modelBlack)
@@ -207,30 +197,13 @@ const App = () => {
 
   const handleValue = (e) => {
     const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
+    try {
+      setFormData({ ...formData, [name]: JSON.parse(value) })
+    } catch (error) {
+      setFormData({ ...formData, [name]: value })
+    }
   }
 
-  useEffect(() => {
-    // setActiveOption(null)
-    console.log('formData', formData)
-    if (formData.body == 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)') {
-      setModel(modelBlack)
-      // setTexture(texture1)
-    } else if (formData.body == 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)') {
-      setModel(modelBlackOrange)
-      // setTexture(texture2)
-    } else if (formData.body == 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)') {
-      setModel(modelRed)
-      // setTexture(texture3)
-    } else if (formData.body == 'linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)') {
-      setModel(modelBlue)
-      // setTexture(texture4)
-    } else if (formData.body == 'red') {
-      // setTexture(texture5)
-    } else if (formData.body == 'orange') {
-      // setTexture(texture6)
-    }
-  }, [formData])
 
   const handlePatch = (e) => {
     setPatch({ ...patch, texture: e.target.value })
@@ -280,329 +253,234 @@ const App = () => {
   return (
     <>
       <main>
-        <div class="jacket-builder">
-          <div class="container-fluid">
-            <div class="row g-4">
-              <div class="col-lg-4 col-12 panel">
-                <div class="builder-options h-100">
-                  <ul class="options-tabs" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active" onClick={() => setActiveOption(null)} id="pills-material-tab" data-bs-toggle="pill"
+        <div className="jacket-builder">
+          <div className="container-fluid">
+            <div className="row g-4">
+              <div className="col-lg-4 col-12 panel">
+                <div className="builder-options h-100">
+                  <ul className="options-tabs" id="pills-tab" role="tablist">
+                    <li className="nav-item" role="presentation">
+                      <button className="nav-link active" onClick={() => setActiveOption(null)} id="pills-material-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-material" type="button" role="tab"
                         aria-controls="pills-material" aria-selected="true">Materials & Colors</button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link" onClick={() => setActiveOption(null)} id="design-tab" data-bs-toggle="pill" data-bs-target="#design"
+                    <li className="nav-item" role="presentation">
+                      <button className="nav-link" onClick={() => setActiveOption(null)} id="design-tab" data-bs-toggle="pill" data-bs-target="#design"
                         type="button" role="tab" aria-controls="design" aria-selected="false">Design &
                         Patches</button>
                     </li>
                   </ul>
-                  <div class="options-content">
-                    <div class="tab-content" id="pills-tabContent">
-                      <div class="tab-pane fade show active" id="pills-material" role="tabpanel"
-                        aria-labelledby="pills-material-tab" tabindex="0">
-                        {!activeOption && <ul class="option-keys">
+                  <div className="options-content">
+                    <div className="tab-content" id="pills-tabContent">
+                      <div className="tab-pane fade show active" id="pills-material" role="tabpanel"
+                        aria-labelledby="pills-material-tab" tabIndex="0">
+                        {!activeOption && <ul className="option-keys">
                           <li>
                             <button data-target="#collar-content" onClick={() => setActiveOption('collar')}>
-                              <span class="thumb">
-                                <img class="img-fluid" src={byronCollar} alt="" />
+                              <span className="thumb">
+                                <img className="img-fluid" src={byronCollar} alt="" />
                               </span>
                               <div>
-                                <h6 class="option">Collar</h6>
-                                <h4 class="value">{formData.collar}</h4>
+                                <h6 className="option">Collar</h6>
+                                <h4 className="value">{formData.collar}</h4>
                               </div>
                             </button>
                           </li>
                           <li>
                             <button data-target="#body-color-content" onClick={() => setActiveOption('body')}>
-                              <span class="thumb-color">
-                                <span class="color"
-                                  style={{ backgroundColor: formData.body }}></span>
+                              <span className="thumb-color">
+                                <span className="color"
+                                  style={{ backgroundColor: formData.body?.hex }}></span>
                               </span>
                               <div>
-                                <h6 class="option">Body</h6>
-                                <h4 class="value">Bright White Wool</h4>
+                                <h6 className="option">Body</h6>
+                                <h4 className="value">{formData.body?.name}</h4>
                               </div>
                             </button>
                           </li>
                           <li>
                             <button onClick={() => setActiveOption('insideLining')}>
-                              <span class="thumb-color">
-                                <span class="color"
-                                  style={{ backgroundColor: formData.insideLining }}></span>
+                              <span className="thumb-color">
+                                <span className="color" style={{ backgroundColor: formData.insideLining?.hex }}></span>
                               </span>
                               <div>
-                                <h6 class="option">Inside Lining</h6>
-                                <h4 class="value">(+$15.00) Royal Blue Quilted</h4>
+                                <h6 className="option">Inside Lining</h6>
+                                <h4 className="value">{formData.insideLining?.name}</h4>
                               </div>
                             </button>
                           </li>
                         </ul>}
-                        {activeOption == 'collar' && <div class="option-values" id="collar-content">
-                          <button class="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                        {activeOption == 'collar' && <div className="option-values" id="collar-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Collar</h6>
                           <h6 className="current-val">{formData.collar}</h6>
-                          <ul class="option-images">
+                          <ul className="option-images">
                             <li>
                               <input type="radio" name="collar" value='regular' onChange={handleValue} id="collar-regular" />
-                              <label for="collar-regular">
+                              <label htmlFor="collar-regular">
                                 <img src={regularCollar} alt="" />
-                                <span class="txt">Regular</span>
+                                <span className="txt">Regular</span>
                               </label>
                             </li>
                             <li>
                               <input type="radio" name="collar" onChange={handleValue} id="collar-byron" value='byron' checked />
-                              <label for="collar-byron">
+                              <label htmlFor="collar-byron">
                                 <img src={byronCollar} alt="" />
-                                <span class="txt">Byron</span>
+                                <span className="txt">Byron</span>
                               </label>
                             </li>
                             <li>
                               <input type="radio" name="collar" onChange={handleValue} id="collar-hoodie" value='hoodie' />
-                              <label for="collar-hoodie">
+                              <label htmlFor="collar-hoodie">
                                 <img src={hoodieCollar} alt="" />
-                                <span class="txt">Hoodie</span>
+                                <span className="txt">Hoodie</span>
                               </label>
                             </li>
                             <li>
                               <input type="radio" name="collar" onChange={handleValue} id="collar-sailor" value='sailor' />
-                              <label for="collar-sailor">
+                              <label htmlFor="collar-sailor">
                                 <img src={sailorCollar} alt="" />
-                                <span class="txt">Sailor</span>
+                                <span className="txt">Sailor</span>
                               </label>
                             </li>
                           </ul>
                         </div>}
-                        {activeOption === 'body' && <div class="option-values" id="body-color-content">
-                          <button class="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                        {activeOption === 'body' && <div className="option-values" id="body-color-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Body</h6>
-                          <h6 className='current-val'>Brown Wool</h6>
-                          <ul class="option-colors">
-                            <li>
-                              <input value="linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)'} onChange={handleValue} id="body-color-000000" />
-                              <label for="body-color-000000">
-                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)'} onChange={handleValue} id="body-color-be6858" />
-                              <label for="body-color-be6858">
-                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 45%, rgba(255,0,0,1) 50%, rgba(0,0,0,1) 55%, rgba(0,0,0,1) 100%)' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)'} onChange={handleValue} id="body-color-ec8e19" />
-                              <label for="body-color-ec8e19">
-                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(255,0,0,1) 0%, rgba(255,0,0,1) 45%, rgba(255,255,255,1) 50%, rgba(255,0,0,1) 55%, rgba(255,0,0,1) 100%)' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)" type="radio" name="body" checked={formData.body === 'linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)'} onChange={handleValue} id="body-color-875b32" />
-                              <label for="body-color-875b32">
-                                <span class="color" style={{ background: 'linear-gradient(135deg, rgba(8,15,25,1) 0%, rgba(8,15,25,1) 45%, rgba(255,255,255,1) 50%, rgba(8,15,25,1) 55%, rgba(8,15,25,1) 100%)' }}></span>
-                              </label>
-                            </li>
+                          <h6 className='current-val'>{formData.body?.name}</h6>
+                          <ul className="option-colors">
+                            {bodyData.map((item, ind) => (
+                              <li key={ind}>
+                                <input
+                                  value={JSON.stringify(item)}
+                                  type="radio"
+                                  name="body"
+                                  checked={JSON.stringify(formData.body) === JSON.stringify(item)}
+                                  onChange={handleValue}
+                                  id={`body-color-${item.name.replaceAll(' ', '')}`}
+                                />
+                                <label htmlFor={`body-color-${item.name.replaceAll(' ', '')}`}>
+                                  <span className="color" style={{ background: item.hex }}></span>
+                                </label>
+                              </li>
+                            ))}
                           </ul>
                         </div>}
-                        {activeOption == 'insideLining' && <div class="option-values" id="inside-lining-content">
-                          <button class="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                        {activeOption == 'insideLining' && <div className="option-values" id="inside-lining-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Inside Lining</h6>
-                          <ul class="option-colors">
-                            <li>
-                              <input value="#f2e7d5" checked={formData.insideLining == '#f2e7d5'} type="radio" name="insideLining" onChange={handleValue} id="inside-lining-f2e7d5" />
-                              <label for="inside-lining-f2e7d5">
-                                <span class="color" style={{ backgroundColor: '#f2e7d5' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="#be6858" checked={formData.insideLining == '#be6858'} type="radio" name="insideLining" onChange={handleValue} id="inside-lining-be6858" />
-                              <label for="inside-lining-be6858">
-                                <span class="color" style={{ backgroundColor: '#be6858' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="#ec8e19" checked={formData.insideLining == '#ec8e19'} type="radio" name="insideLining" onChange={handleValue} id="inside-lining-ec8e19" />
-                              <label for="inside-lining-ec8e19">
-                                <span class="color" style={{ backgroundColor: '#ec8e19' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="#875b32" checked={formData.insideLining == '#875b32'} type="radio" name="insideLining" onChange={handleValue} id="inside-lining-875b32" />
-                              <label for="inside-lining-875b32">
-                                <span class="color" style={{ backgroundColor: '#875b32' }}></span>
-                              </label>
-                            </li>
-                            <li>
-                              <input value="red" checked={formData.insideLining == 'red'} type="radio" name="insideLining" onChange={handleValue} id="inside-lining-red" />
-                              <label for="inside-lining-red">
-                                <span class="color" style={{ backgroundColor: 'red' }}></span>
-                              </label>
-                            </li>
+                          <h6 className='current-val'>{formData.insideLining?.name}</h6>
+                          <ul className="option-colors">
+                            {bodyData.map((item, ind) => (
+                              <li key={ind}>
+                                <input
+                                  value={JSON.stringify(item)}
+                                  type="radio"
+                                  name="insideLining"
+                                  checked={JSON.stringify(formData.insideLining) === JSON.stringify(item)}
+                                  onChange={handleValue}
+                                  id={`body-insideLining-${item.name.replaceAll(' ', '')}`}
+                                />
+                                <label htmlFor={`body-insideLining-${item.name.replaceAll(' ', '')}`}>
+                                  <span className="color" style={{ background: item.hex }}></span>
+                                </label>
+                              </li>
+                            ))}
                           </ul>
                         </div>}
                       </div>
-                      <div class="tab-pane patch-tab fade" id="design" role="tabpanel" aria-labelledby="design-tab"
-                        tabindex="0">
-                        <div class="option-values" id="collar-content">
-                          {!patch?.position && <ul class="option-images">
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'right-chest' })}
+                      <div className="tab-pane patch-tab fade" id="design" role="tabpanel" aria-labelledby="design-tab"
+                        tabIndex="0">
+                        <div className="option-values" id="collar-content">
+                          {!patch?.position && <ul className="option-images">
+                            {patchPositions.map((item, ind) => <li key={ind}>
+                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: item.value })}
                                 id="patch-right-chest" />
-                              <label for="patch-right-chest">
-                                <img src={rightChestPatch} alt="" />
-                                <span class="txt">Right Chest</span>
+                              <label htmlFor="patch-right-chest">
+                                <img src={item.icon} alt={item.title} />
+                                <span className="txt">{item.title}</span>
                               </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'left-chest' })}
-                                id="patch-left-chest" value='byron' />
-                              <label for="patch-left-chest">
-                                <img src={leftChestPatch} alt="" />
-                                <span class="txt">Left Chest</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'above-left-elbow' })} id="patch-above-left-elbow" value='byron' />
-                              <label for="patch-above-left-elbow">
-                                <img src={aboveLeftElbowPatch} alt="" />
-                                <span class="txt">Above Left Elbow</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'above-right-elbow' })} id="above-right-elbow-patch" value='byron' />
-                              <label for="above-right-elbow-patch">
-                                <img src={aboveRightElbowPatch} alt="" />
-                                <span class="txt">Above Right Elbow</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'back' })}
-                                id="back-patch" value='byron' />
-                              <label for="back-patch">
-                                <img src={backPatch} alt="" />
-                                <span class="txt">Back</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'below-left-elbow' })} id="below-left-elbow-patch" value='byron' />
-                              <label for="below-left-elbow-patch">
-                                <img src={belowLeftElbowPatch} alt="" />
-                                <span class="txt">Below Left Elbow</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'below-right-elbow' })} id="below-right-elbow-patch" value='byron' />
-                              <label for="below-right-elbow-patch">
-                                <img src={belowRightElbowPatch} alt="" />
-                                <span class="txt">Below Right Elbow</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'bottom-left-sleeve' })} id="bottom-left-sleeve-patch" value='byron' />
-                              <label for="bottom-left-sleeve-patch">
-                                <img src={bottomLeftSleevePatch} alt="" />
-                                <span class="txt">Bottom Left Sleeve</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'bottom-right-sleeve' })} id="bottom-right-sleeve-patch" value='byron' />
-                              <label for="bottom-right-sleeve-patch">
-                                <img src={bottomRightSleevePatch} alt="" />
-                                <span class="txt">Bottom Right Sleeve</span>
-                              </label>
-                            </li>
-                            {/* <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'left-shoulder' })} id="left-shoulder-patch" value='byron' />
-                              <label for="left-shoulder-patch">
-                                <img src={leftShoulderPatch} alt="" />
-                                <span class="txt">Left Shoulder</span>
-                              </label>
-                            </li>
-                            <li>
-                              <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: 'right-shoulder' })} id="right-shoulder-patch" value='byron' />
-                              <label for="right-shoulder-patch">
-                                <img src={rightShoulderPatch} alt="" />
-                                <span class="txt">Right Shoulder</span>
-                              </label>
-                            </li> */}
+                            </li>)}
                           </ul>}
                           {(patch?.position && !patch.type) && <div>
-                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <h6>{patch.position.split('-').join(' ')}</h6>
-                            <h6 class="current-val">byron</h6>
-                            <ul class="option-images">
+                            <h6 className="current-val">byron</h6>
+                            <ul className="option-images">
                               <li>
                                 <input type="radio" name="patch-type" id="my-patch-image" />
-                                <label for="my-patch-image">
+                                <label htmlFor="my-patch-image">
                                   <img src={myPatchIcon} alt="" />
                                 </label>
                                 <span className="txt">My Patches</span>
                               </li>
                               <li>
                                 <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'upload' })} id="patch-upload" />
-                                <label for="patch-upload">
+                                <label htmlFor="patch-upload">
                                   <img src={uploadIcon} alt="" />
                                 </label>
                                 <span className="txt">Upload</span>
                               </li>
                               <li>
                                 <input type="radio" name="patch-type" id="ai-patch" />
-                                <label for="ai-patch">
+                                <label htmlFor="ai-patch">
                                   <img src={aiPatchIcon} alt="" />
                                 </label>
                                 <span className="txt">AI Assisted</span>
                               </li>
                               <li>
                                 <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'text' })} id="patch-text" />
-                                <label for="patch-text">
+                                <label htmlFor="patch-text">
                                   <img src={letterIcon} alt="" />
                                 </label>
-
+                                <span className="txt">Letters</span>
                               </li>
                               <li>
                                 <input type="radio" name="patch-type" onChange={() => setPatch({ ...patch, type: 'image' })} id="patch-image" />
-                                <label for="patch-image">
+                                <label htmlFor="patch-image">
                                   <img src={patchIcon} alt="" />
                                 </label>
+                                <span className="txt">Patches</span>
                               </li>
                             </ul>
                           </div>}
                           {patch?.type == 'image' ? <div className="option-values">
-                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
-                            <ul class="option-images">
+                            <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <ul className="option-images">
                               <li>
                                 <input type="radio" name="patch" value={patchBullDog} onChange={handlePatch} id="patch-bull-dog" />
-                                <label for="patch-bull-dog">
+                                <label htmlFor="patch-bull-dog">
                                   <img src={patchBullDog} alt="" />
                                 </label>
                               </li>
                               <li>
                                 <input type="radio" name="patch" value={patchMasks} onChange={handlePatch} id="patch-masks" />
-                                <label for="patch-masks">
+                                <label htmlFor="patch-masks">
                                   <img src={patchMasks} alt="" />
                                 </label>
                               </li>
                               <li>
                                 <input type="radio" name="patch" value={patchSkull} onChange={handlePatch} id="patch-skull" />
-                                <label for="patch-skull">
+                                <label htmlFor="patch-skull">
                                   <img src={patchSkull} alt="" />
                                 </label>
                               </li>
                               <li>
                                 <input type="radio" name="patch" value={patchUsFlag} onChange={handlePatch} id="patch-flag" />
-                                <label for="patch-flag">
+                                <label htmlFor="patch-flag">
                                   <img src={patchUsFlag} alt="" />
                                 </label>
                               </li>
                             </ul>
                           </div> : patch?.type == 'text' ? <>
-                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <div className='input-patch'>
                               <input type="text" placeholder='upto 3 character' onChange={handleTextInput} maxLength={3} />
                               <button onClick={addToPatchArray}>Add</button>
                             </div>
                           </> : patch?.type == 'upload' && <div className='upload-patch'>
-                            <button class="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <div className="upload-field">
                               <input type="file" onChange={handlePathUpload} />
                               <h5>Drop Your Image, or browse</h5>
@@ -615,8 +493,8 @@ const App = () => {
                   </div>
                 </div>
               </div>
-              <div class="col-lg-8 col-12 panel">
-                <div class="model-wrapper h-100">
+              <div className="col-lg-8 col-12 panel">
+                <div className="model-wrapper h-100">
                   <ProductViewer
                     key={model}
                     // texturePath={texture} 
