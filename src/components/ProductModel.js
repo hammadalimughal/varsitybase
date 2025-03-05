@@ -4,6 +4,7 @@ import { OrbitControls, useTexture, useGLTF, Text, useProgress } from '@react-th
 import loadingGif from '../assets/images/loading.gif'
 import * as THREE from 'three'
 import leatherTexture from '../assets/material-texture/leather.jpg'
+import flagImage from '../assets/images/patches/us-flag.png'
 
 const Loader = () => {
     const { progress } = useProgress(); // Get loading progress
@@ -41,6 +42,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     const { scene } = useGLTF(modelPath);
     const textures = useTexture(patchs.map(patch => patch.texture));
     const leather = useTexture(leatherTexture)
+    const patchTexture = useTexture(flagImage)
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
@@ -55,12 +57,33 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                     child.material = material;
                     child.material.needsUpdate = true;
                 }
+                if (child.name == 'patch') {
+                    console.log("Left Pocket: ", child.name);
+                    const material = new THREE.MeshStandardMaterial({
+                        map: patchTexture, // Assuming the texture for left-sleeves is at index 0
+                        // transparent: true,
+                    });
+                    // material.map.wrapS = THREE.RepeatWrapping;
+                    // material.map.wrapT = THREE.RepeatWrapping;
+                    // Adjust texture repeat to fit the entire texture on the object
+                    // material.map.repeat.set(1, 1); // Adjust values based on your model
+
+                    // Adjust offset to center the texture
+                    // material.map.offset.set(0, 0); // Adjust values to center the texture
+                    const scale = new THREE.Vector3().setFromMatrixScale(child.matrixWorld);
+                    const maxScale = Math.max(scale.x, scale.y, scale.z);
+                    // material.map.repeat.set(maxScale, maxScale);
+
+                    // child.material.map = textures[1]
+                    child.material = material;
+                    child.material.needsUpdate = true;
+                }
                 // if (!child.material.map) {
                 //     child.material.map = new THREE.TextureLoader().load(patchs[1].texture);
                 // } else {
                 //     child.material.map = textures[1];
                 // }
-                if(child.name == 'model001'){
+                if (child.name == 'model001') {
                     console.log("Sleeves:", child.name);
                     child.material.color.set(formData?.sleeves?.hex);
                     // child.material.color.set('blue');
@@ -69,13 +92,13 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                 //     console.log("Sleeves:", child.name);
                 //     child.material.color.set("blue");
                 // }
-                if(child.name == 'left-pocket'){
+                if (child.name == 'left-pocket') {
                     // console.log("Sleeves:", child.name);
                     // child.material.color.set("red");
                 }
             }
         });
-    }, [scene,formData]);
+    }, [scene, formData]);
     // useEffect(() => {
     //     patchs.forEach((patch, index) => {
     //         if (index) {
@@ -110,7 +133,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     //     });
     // }, [scene, textures, patchs]);
 
-    scene.position.set(0, -2.5, 0);
+    scene.position.set(0, -0, 0);
 
     return (
         <>
@@ -132,7 +155,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                 )
             ))} */}
             {/* <primitive object={scene} scale={3} />; */}
-            <primitive object={scene} scale={3} />;
+            <primitive object={scene} scale={10} />;
         </>
     );
 };
