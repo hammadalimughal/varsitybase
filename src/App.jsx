@@ -30,6 +30,7 @@ import sailorCollar from './assets/images/sailor-collar.svg'
 // import modelBlack from './assets/models/JACK_black.glb'
 // import modelBlack from './assets/models/edited.glb'
 import modelBlack from './assets/models/test.glb'
+// import modelBlack from './assets/models/jack-edited.glb'
 // import modelBlue from './assets/models/JACK blue.glb'
 
 import patchBullDog from './assets/images/patches/bull-dog.png'

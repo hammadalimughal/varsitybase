@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useTexture, useGLTF, Text, useProgress } from '@react-three/drei';
 import loadingGif from '../assets/images/loading.gif'
 import * as THREE from 'three'
+import leatherTexture from '../assets/material-texture/leather.jpg'
 
 const Loader = () => {
     const { progress } = useProgress(); // Get loading progress
@@ -18,7 +19,7 @@ const ModelPatch = ({ patch }) => {
     console.log('patch', patch)
     const patchTexture = useTexture(patch?.texture);
     // const { position, rotation, scale } = patch?.adjustment
-    const position = [-2, 0.5, 0.6], rotation = [0, -0.5, 0], scale = [1, 1, 1];
+    const position = [-4, 6, 1], rotation = [0, -0.5, 0], scale = [1, 1, 1];
     return (
         <mesh
             position={position}
@@ -39,14 +40,20 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     console.log('formData', formData);
     const { scene } = useGLTF(modelPath);
     const textures = useTexture(patchs.map(patch => patch.texture));
-
+    const leather = useTexture(leatherTexture)
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
                 console.log("Mesh Name: ", child.name);
                 if (child.name == 'model001') {
                     console.log("Left Pocket: ", child.name);
-                    child.material.map = textures[1]
+                    const material = new THREE.MeshStandardMaterial({
+                        map: leather, // Assuming the texture for left-sleeves is at index 0
+                        // transparent: true,
+                    });
+                    // child.material.map = textures[1]
+                    child.material = material;
+                    child.material.needsUpdate = true;
                 }
                 // if (!child.material.map) {
                 //     child.material.map = new THREE.TextureLoader().load(patchs[1].texture);
@@ -56,16 +63,16 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                 if(child.name == 'model001'){
                     console.log("Sleeves:", child.name);
                     child.material.color.set(formData?.sleeves?.hex);
-                    // child.material.color.set('red');
+                    // child.material.color.set('blue');
                 }
                 // if(child.name == 'model003'){
                 //     console.log("Sleeves:", child.name);
                 //     child.material.color.set("blue");
                 // }
-                // if(child.name == 'model.001'){
-                //     console.log("Sleeves:", child.name);
-                //     child.material.color.set("purple");
-                // }
+                if(child.name == 'left-pocket'){
+                    // console.log("Sleeves:", child.name);
+                    // child.material.color.set("red");
+                }
             }
         });
     }, [scene,formData]);
