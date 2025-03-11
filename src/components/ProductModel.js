@@ -5,6 +5,7 @@ import loadingGif from '../assets/images/loading.gif'
 import * as THREE from 'three'
 import leatherTexture from '../assets/material-texture/leather.jpg'
 import flagImage from '../assets/images/patches/us-flag.png'
+import transparentImage from '../assets/images/patches/transparent.png'
 
 const Loader = () => {
     const { progress } = useProgress(); // Get loading progress
@@ -15,6 +16,57 @@ const Loader = () => {
         </div>
     )
 }
+
+// [
+//     "Mesh037",
+//     "Mesh037_1",
+//     "collar_byron",
+//     "collar_hoodie",
+//     "Collar_Regular001",
+//     "collar_trim_1line",
+//     "collar_trim_2lines",
+//     "collar_trim_4lines",
+//     "Patch_Collar_Back",
+//     "Collar_RetroSailor001",
+//     "Patch_Collar_RetroSailor",
+//     "collar_sailorwithzipper001",
+//     "patch_collar_sailorwithzipper",
+//     "inside_body_zipper",
+//     "inside_Jacket_Snaps",
+//     "patch_Backjacket",
+//     "Patch_chest_L",
+//     "Patch_chest_R",
+//     "patch_LeftPocket_down",
+//     "patch_LeftPocket_down_tilted",
+//     "patch_LeftPocket_up",
+//     "patch_LeftPocket_up_tilted",
+//     "patch_RightPocket_down",
+//     "patch_RightPocket_down_tilted",
+//     "patch_RightPocket_up",
+//     "patch_RightPocket_up_tilted",
+//     "Jacket_snaps",
+//     "Mesh006",
+//     "Mesh006_1",
+//     "Knit_Trim",
+//     "Knit_Trim_1line",
+//     "Knit_Trim_2lines",
+//     "Knit_Trim_4lines",
+//     "Logo",
+//     "Pockets",
+//     "shadow",
+//     "Mesh039",
+//     "Mesh039_1",
+//     "sleeves_L",
+//     "patch_L_sleeve1",
+//     "patch_L_sleeve2",
+//     "patch_L_sleeve3",
+//     "patch_L_sleeve4",
+//     "patch_R_sleeve1",
+//     "patch_R_sleeve2",
+//     "patch_R_sleeve3",
+//     "patch_R_sleeve4",
+//     "sleeves_R"
+// ]
 
 const ModelPatch = ({ patch }) => {
     console.log('patch', patch)
@@ -41,98 +93,87 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     console.log('formData', formData);
     const { scene } = useGLTF(modelPath);
     const textures = useTexture(patchs.map(patch => patch.texture));
+    const transparentPatch = useTexture(transparentImage);
     const leather = useTexture(leatherTexture)
     const patchTexture = useTexture(flagImage)
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
                 console.log("Mesh Name: ", child.name);
-                if (child.name == 'model001') {
-                    console.log("Left Pocket: ", child.name);
+                if (child.name.toLowerCase().includes('patch')) {
+                    console.log("patch: ", child.name);
                     const material = new THREE.MeshStandardMaterial({
-                        map: leather, // Assuming the texture for left-sleeves is at index 0
-                        // transparent: true,
+                        map: transparentPatch,
+                        transparent: true,
                     });
-                    // child.material.map = textures[1]
                     child.material = material;
                     child.material.needsUpdate = true;
                 }
-                if (child.name == 'patch') {
-                    console.log("Left Pocket: ", child.name);
-                    const material = new THREE.MeshStandardMaterial({
-                        map: patchTexture, // Assuming the texture for left-sleeves is at index 0
-                        // transparent: true,
-                    });
-                    // material.map.wrapS = THREE.RepeatWrapping;
-                    // material.map.wrapT = THREE.RepeatWrapping;
-                    // Adjust texture repeat to fit the entire texture on the object
-                    // material.map.repeat.set(1, 1); // Adjust values based on your model
-
-                    // Adjust offset to center the texture
-                    // material.map.offset.set(0, 0); // Adjust values to center the texture
-                    const scale = new THREE.Vector3().setFromMatrixScale(child.matrixWorld);
-                    const maxScale = Math.max(scale.x, scale.y, scale.z);
-                    // material.map.repeat.set(maxScale, maxScale);
-
-                    // child.material.map = textures[1]
-                    child.material = material;
-                    child.material.needsUpdate = true;
+                if (child.name == 'Jacket_snaps' || child.name == 'Mesh006') {
+                    console.log("Body:", child.name);
+                    child.material.color.set(formData?.body?.hex);
                 }
-                // if (!child.material.map) {
-                //     child.material.map = new THREE.TextureLoader().load(patchs[1].texture);
-                // } else {
-                //     child.material.map = textures[1];
-                // }
-                if (child.name == 'model001') {
+                if (child.name == 'sleeves_R' || child.name == 'sleeves_L') {
                     console.log("Sleeves:", child.name);
                     child.material.color.set(formData?.sleeves?.hex);
-                    // child.material.color.set('blue');
                 }
-                // if(child.name == 'model003'){
-                //     console.log("Sleeves:", child.name);
-                //     child.material.color.set("blue");
-                // }
-                if (child.name == 'left-pocket') {
-                    // console.log("Sleeves:", child.name);
-                    // child.material.color.set("red");
+                if (child.name == 'Pockets') {
+                    console.log("Pockets:", child.name);
+                    child.material.color.set(formData?.pocket?.hex);
+                }
+                if (child.name == 'inside_body_zipper' || child.name == 'inside_Jacket_Snaps') {
+                    console.log("Inside Lining:", child.name);
+                    child.material.color.set(formData?.insideLining?.hex);
+                }
+                if (child.name == 'Mesh037') {
+                    console.log("Snaps:", child.name);
+                    child.material.color.set(formData?.snaps?.hex);
+                }
+                if (child.name == 'Mesh006_1') {
+                    console.log("Zipper:", child.name);
+                    const material = new THREE.MeshStandardMaterial({
+                        map: transparentPatch,
+                        transparent: true,
+                    });
+                    child.material = material;
+                    child.material.needsUpdate = true;
+                }
+                if (child.name == 'Mesh039' || child.name == 'Mesh039_1') {
+                    console.log("Shoulder Inserts:", child.name);
+                    child.material.color.set(formData?.shoulderInserts?.hex);
+                }
+                if (child.name.toLowerCase().includes('collar')) {
+                    child.material.color.set(formData?.body?.hex);
+                }
+                // handle collars
+                if (formData.collar == 'byron' && (child.name == 'collar_hoodie' || child.name == 'Collar_Regular001' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
+                    console.log("Collar:", child.name);
+                    const material = new THREE.MeshStandardMaterial({
+                        map: transparentPatch,
+                        transparent: true,
+                    });
+                    child.material = material;
+                    child.material.needsUpdate = true;
+                } else if (formData.collar == 'regular' && (child.name == 'collar_hoodie' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
+                    console.log("Collar:", child.name);
+                    const material = new THREE.MeshStandardMaterial({
+                        map: transparentPatch,
+                        transparent: true,
+                    });
+                    child.material = material;
+                    child.material.needsUpdate = true;
+                } else if (formData.collar == 'hoodie' && (child.name == 'Collar_Regular001' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
+                    console.log("Collar:", child.name);
+                    const material = new THREE.MeshStandardMaterial({
+                        map: transparentPatch,
+                        transparent: true,
+                    });
+                    child.material = material;
+                    child.material.needsUpdate = true;
                 }
             }
         });
     }, [scene, formData]);
-    // useEffect(() => {
-    //     patchs.forEach((patch, index) => {
-    //         if (index) {
-    //             scene.traverse((child) => {
-    //                 console.log("Mesh Name: ", child.name);
-    //                 // if (child.isMesh && child.name === patch.objectName) {
-    //                 // if (child.isMesh && child.name === 'model001') {
-    //                     if (child.isMesh && child.name === 'left-pocket') {
-    //                     console.log("Applying texture to:", child.name);
-    //                     if (!child.material.map) {
-    //                         child.material.map = new THREE.TextureLoader().load(patch.texture);
-    //                     } else {
-    //                         child.material.map = textures[index];
-    //                     }
-    //                     // Set texture wrapping to repeat
-    //                     child.material.map.wrapS = THREE.RepeatWrapping;
-    //                     child.material.map.wrapT = THREE.RepeatWrapping;
-
-    //                     // Extract scale from the object's matrix
-    //                     const scale = new THREE.Vector3().setFromMatrixScale(child.matrixWorld);
-
-    //                     // Calculate the maximum scale value
-    //                     const maxScale = Math.max(scale.x, scale.y, scale.z);
-
-    //                     // Adjust texture repeat to scale the texture
-    //                     child.material.map.repeat.set(maxScale, maxScale);
-
-    //                     child.material.needsUpdate = true; // Ensure the material updates
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }, [scene, textures, patchs]);
-
     scene.position.set(0, -0, 0);
 
     return (
@@ -155,7 +196,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                 )
             ))} */}
             {/* <primitive object={scene} scale={3} />; */}
-            <primitive object={scene} scale={10} />;
+            <primitive object={scene} scale={0.4} />;
         </>
     );
 };

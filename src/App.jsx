@@ -23,16 +23,7 @@ import regularCollar from './assets/images/regular-collar.svg'
 import sailorCollar from './assets/images/sailor-collar.svg'
 
 // 3d model
-// import model from './assets/models/base.glb'
-// import modelOrange from './assets/models/JACK_Orange.glb'
-// import modelBlackOrange from './assets/models/JACK_BlackOrange.glb'
-// import modelRed from './assets/models/JACK_red.glb'
-// import modelBlack from './assets/models/JACK_black.glb'
-// import modelBlack from './assets/models/edited.glb'
-// import modelBlack from './assets/models/test.glb'
-import modelBlack from './assets/models/patch.glb'
-// import modelBlack from './assets/models/jack-edited.glb'
-// import modelBlue from './assets/models/JACK blue.glb'
+import model from './assets/models/model.glb'
 
 import patchBullDog from './assets/images/patches/bull-dog.png'
 import patchMasks from './assets/images/patches/masks.png'
@@ -52,7 +43,6 @@ const App = () => {
     insideLining: colorsData[2]
   })
   const [activeOption, setActiveOption] = useState(null)
-  const [model, setModel] = useState(modelBlack)
   // const [texture, setTexture] = useState(textureTransparent)
   const [patch, setPatch] = useState(null)
 
@@ -317,6 +307,39 @@ const App = () => {
                               </div>
                             </button>
                           </li>
+                          <li>
+                            <button onClick={() => setActiveOption('pocket')}>
+                              <span className="thumb-color">
+                                <span className="color" style={{ backgroundColor: formData.pocket?.hex }}></span>
+                              </span>
+                              <div>
+                                <h6 className="option">Pocket</h6>
+                                <h4 className="value">{formData.pocket?.name}</h4>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button onClick={() => setActiveOption('shoulderInserts')}>
+                              <span className="thumb-color">
+                                <span className="color" style={{ backgroundColor: formData.shoulderInserts?.hex }}></span>
+                              </span>
+                              <div>
+                                <h6 className="option">Shoulder Inserts</h6>
+                                <h4 className="value">{formData.shoulderInserts?.name}</h4>
+                              </div>
+                            </button>
+                          </li>
+                          <li>
+                            <button onClick={() => setActiveOption('snaps')}>
+                              <span className="thumb-color">
+                                <span className="color" style={{ backgroundColor: formData.shoulderInserts?.hex }}></span>
+                              </span>
+                              <div>
+                                <h6 className="option">Snaps</h6>
+                                <h4 className="value">{formData.snaps?.name}</h4>
+                              </div>
+                            </button>
+                          </li>
                         </ul>}
                         {activeOption == 'collar' && <div className="option-values" id="collar-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
@@ -331,7 +354,7 @@ const App = () => {
                               </label>
                             </li>
                             <li>
-                              <input type="radio" name="collar" onChange={handleValue} id="collar-byron" value='byron' checked />
+                              <input type="radio" name="collar" onChange={handleValue} id="collar-byron" value='byron' />
                               <label htmlFor="collar-byron">
                                 <img src={byronCollar} alt="" />
                                 <span className="txt">Byron</span>
@@ -413,6 +436,72 @@ const App = () => {
                                   id={`body-insideLining-${item.name.replaceAll(' ', '')}`}
                                 />
                                 <label htmlFor={`body-insideLining-${item.name.replaceAll(' ', '')}`}>
+                                  <span className="color" style={{ background: item.hex }}></span>
+                                </label>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>}
+                        {activeOption == 'pocket' && <div className="option-values" id="pocket-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                          <h6>Choose Pocket</h6>
+                          <h6 className='current-val'>{formData.pocket?.name}</h6>
+                          <ul className="option-colors">
+                            {colorsData.map((item, ind) => (
+                              <li key={ind}>
+                                <input
+                                  value={JSON.stringify(item)}
+                                  type="radio"
+                                  name="pocket"
+                                  checked={JSON.stringify(formData.pocket) === JSON.stringify(item)}
+                                  onChange={handleValue}
+                                  id={`body-pocket-${item.name.replaceAll(' ', '')}`}
+                                />
+                                <label htmlFor={`body-pocket-${item.name.replaceAll(' ', '')}`}>
+                                  <span className="color" style={{ background: item.hex }}></span>
+                                </label>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>}
+                        {activeOption == 'shoulderInserts' && <div className="option-values" id="shoulderInserts-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                          <h6>Choose Shoulder Inserts</h6>
+                          <h6 className='current-val'>{formData.shoulderInserts?.name}</h6>
+                          <ul className="option-colors">
+                            {colorsData.map((item, ind) => (
+                              <li key={ind}>
+                                <input
+                                  value={JSON.stringify(item)}
+                                  type="radio"
+                                  name="shoulderInserts"
+                                  checked={JSON.stringify(formData.shoulderInserts) === JSON.stringify(item)}
+                                  onChange={handleValue}
+                                  id={`body-shoulderInserts-${item.name.replaceAll(' ', '')}`}
+                                />
+                                <label htmlFor={`body-shoulderInserts-${item.name.replaceAll(' ', '')}`}>
+                                  <span className="color" style={{ background: item.hex }}></span>
+                                </label>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>}
+                        {activeOption == 'snaps' && <div className="option-values" id="snaps-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                          <h6>Choose Snaps & Zipper</h6>
+                          <h6 className='current-val'>{formData.snaps?.name}</h6>
+                          <ul className="option-colors">
+                            {colorsData.map((item, ind) => (
+                              <li key={ind}>
+                                <input
+                                  value={JSON.stringify(item)}
+                                  type="radio"
+                                  name="snaps"
+                                  checked={JSON.stringify(formData.snaps) === JSON.stringify(item)}
+                                  onChange={handleValue}
+                                  id={`body-snaps-${item.name.replaceAll(' ', '')}`}
+                                />
+                                <label htmlFor={`body-snaps-${item.name.replaceAll(' ', '')}`}>
                                   <span className="color" style={{ background: item.hex }}></span>
                                 </label>
                               </li>
@@ -526,7 +615,7 @@ const App = () => {
               <div className="col-lg-8 col-12 panel">
                 <div className="model-wrapper h-100">
                   <ProductViewer
-                    key={formData}
+                    key={formData.collar}
                     // texturePath={texture} 
                     formData={formData}
                     modelPath={model} patchs={patchArray} />
