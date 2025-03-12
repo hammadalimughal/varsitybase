@@ -99,9 +99,9 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
-                console.log("Mesh Name: ", child.name);
+                // console.log("Mesh Name: ", child.name);
                 if (child.name.toLowerCase().includes('patch')) {
-                    console.log("patch: ", child.name);
+                    // console.log("patch: ", child.name);
                     const material = new THREE.MeshStandardMaterial({
                         map: transparentPatch,
                         transparent: true,
@@ -142,34 +142,53 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                     console.log("Shoulder Inserts:", child.name);
                     child.material.color.set(formData?.shoulderInserts?.hex);
                 }
-                if (child.name.toLowerCase().includes('collar')) {
-                    child.material.color.set(formData?.body?.hex);
-                }
+                // if (child.name.toLowerCase().includes('collar')) {
+                //     child.material.color.set(formData?.body?.hex);
+                // }
                 // handle collars
-                if (formData.collar == 'byron' && (child.name == 'collar_hoodie' || child.name == 'Collar_Regular001' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
-                    console.log("Collar:", child.name);
-                    const material = new THREE.MeshStandardMaterial({
-                        map: transparentPatch,
-                        transparent: true,
-                    });
-                    child.material = material;
-                    child.material.needsUpdate = true;
-                } else if (formData.collar == 'regular' && (child.name == 'collar_hoodie' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
-                    console.log("Collar:", child.name);
-                    const material = new THREE.MeshStandardMaterial({
-                        map: transparentPatch,
-                        transparent: true,
-                    });
-                    child.material = material;
-                    child.material.needsUpdate = true;
-                } else if (formData.collar == 'hoodie' && (child.name == 'Collar_Regular001' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
-                    console.log("Collar:", child.name);
-                    const material = new THREE.MeshStandardMaterial({
-                        map: transparentPatch,
-                        transparent: true,
-                    });
-                    child.material = material;
-                    child.material.needsUpdate = true;
+                // if (formData.collar == 'byron' && (child.name == 'collar_hoodie' || child.name == 'Collar_Regular001' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
+                //     console.log("Collar:", child.name);
+                //     const material = new THREE.MeshStandardMaterial({
+                //         map: transparentPatch,
+                //         transparent: true,
+                //     });
+                //     child.material = material;
+                //     child.material.needsUpdate = true;
+                // } else if (formData.collar == 'regular' && (child.name == 'collar_hoodie' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
+                //     console.log("Collar:", child.name);
+                //     const material = new THREE.MeshStandardMaterial({
+                //         map: transparentPatch,
+                //         transparent: true,
+                //     });
+                //     child.material = material;
+                //     child.material.needsUpdate = true;
+                // } else if (formData.collar == 'hoodie' && (child.name == 'Collar_Regular001' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
+                //     console.log("Collar:", child.name);
+                //     const material = new THREE.MeshStandardMaterial({
+                //         map: transparentPatch,
+                //         transparent: true,
+                //     });
+                //     child.material = material;
+                //     child.material.needsUpdate = true;
+                // }
+                if (child.name.toLowerCase().includes('collar')) {
+                    if (!child.name.toLowerCase().includes(formData.collar)) {
+                        console.log("Collar:", child.name);
+                        const material = new THREE.MeshStandardMaterial({
+                            map: transparentPatch,
+                            transparent: true,
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                    } else {
+                        const material = new THREE.MeshStandardMaterial({
+                            // map: transparentPatch,
+                            transparent: false,
+                            color: formData?.body?.hex
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                    }
                 }
             }
         });

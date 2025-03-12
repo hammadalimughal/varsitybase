@@ -615,7 +615,7 @@ const App = () => {
               <div className="col-lg-8 col-12 panel">
                 <div className="model-wrapper h-100">
                   <ProductViewer
-                    key={formData.collar}
+                    key={formData}
                     // texturePath={texture} 
                     formData={formData}
                     modelPath={model} patchs={patchArray} />
