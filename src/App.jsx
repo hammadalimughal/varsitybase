@@ -39,147 +39,34 @@ const App = () => {
   const [formData, setFormData] = useState({
     collar: 'byron',
     body: colorsData[0],
-    sleeves: colorsData[6],
-    insideLining: colorsData[2]
+    sleeves: colorsData[0],
+    insideLining: colorsData[23],
+    pocket: colorsData[23],
+    shoulderInserts: colorsData[2],
+    snaps: colorsData[2],
   })
   const [activeOption, setActiveOption] = useState(null)
   // const [texture, setTexture] = useState(textureTransparent)
   const [patch, setPatch] = useState(null)
 
-  const [patchArray, setPatchArray] = useState([
-    {
-      type: 'image',
-      texture: textureTransparent,
-      adjustment: {
-        position: [-0.5, 0.5, 0.57],
-        rotation: [0, -0.45, -0.1]
-      }
-    },
-    // {
-    //   texture: patchSkull,
-    //   adjustment: {
-    //     position: [0.5, 0.5, 0.57],
-    //     rotation: [0, 0.5, 0]
-    //   }
-    // }
-  ])
+  const [patchArray, setPatchArray] = useState([])
 
-  const addToPatchArray = () => {
+  const addToPatchArray = (newPatch) => {
     setPatchArray((prevArray) => {
-      // Create a copy of the previous state
       let temp = [...prevArray];
-
-      // Check if an item with the same position already exists
-      const index = temp.findIndex((item) => item.position === patch?.position);
-
+      const index = temp.findIndex((item) => item.position === newPatch.position);
+  
       if (index !== -1) {
-        // Replace the existing item
-        temp[index] = patch;
+        temp[index] = newPatch;
       } else {
-        // Add a new item
-        temp.push(patch);
+        temp.push(newPatch);
       }
-
+  
       return temp;
     });
-
-    // setPatch(null);
   };
 
 
-  useEffect(() => {
-    if (patch?.position == 'right-chest') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [-0.5, 0.5, 0.6],
-          rotation: [0, -0.5, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-    } else if (patch?.position == 'left-chest') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [0.5, 0.5, 0.57],
-          rotation: [0, 0.5, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-
-    } else if (patch?.position == 'above-left-elbow') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [1.55, 0.5, -0.2],
-          rotation: [-0.4, 1.7, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-    } else if (patch?.position == 'below-left-elbow') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [1.72, -0.1, -0.2],
-          rotation: [-0.3, 1.74, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-    } else if (patch?.position == 'bottom-left-sleeve') {
-      // setPatch({
-      //   ...patch,
-      //   adjustment: {
-      //     position: [-1.9, -1.3, -0],
-      //     rotation: [0.4, 4.5, 0],
-      //     scale: [0.5, 0.5, 0.5]
-      //   }
-      // })
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [1.9, -1.3, -0],
-          rotation: [-0.3, 1.74, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-    } else if (patch?.position == 'above-right-elbow') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [-1.55, 0.5, -0.2],
-          rotation: [0.4, 4.5, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-    } else if (patch?.position == 'below-right-elbow') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [-1.72, -0.1, -0.2],
-          rotation: [0.4, 4.5, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-    } else if (patch?.position == 'bottom-right-sleeve') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [-1.9, -1.3, -0],
-          rotation: [0.4, 4.5, 0],
-          scale: [0.5, 0.5, 0.5]
-        }
-      })
-    } else if (patch?.position == 'back') {
-      setPatch({
-        ...patch,
-        adjustment: {
-          position: [0, 0, -0.8],
-          rotation: [0, 3.1, 0],
-          scale: [1.7, 1.7, 1.7]
-        }
-      })
-    }
-  }, [patch?.position])
 
   const handleValue = (e) => {
     const { name, value } = e.target
@@ -196,8 +83,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (patch?.adjustment && patch?.texture) {
-      addToPatchArray()
+    if (patch?.position && patch?.texture) {
+      addToPatchArray(patch)
     }
   }, [patch])
 
@@ -515,8 +402,8 @@ const App = () => {
                           {!patch?.position && <ul className="option-images">
                             {patchPositions.map((item, ind) => <li key={ind}>
                               <input type="radio" name="collar" onChange={() => setPatch({ ...patch, position: item.value })}
-                                id="patch-right-chest" />
-                              <label htmlFor="patch-right-chest">
+                                id={`patch-position-${ind}`} />
+                              <label htmlFor={`patch-position-${ind}`}>
                                 <img src={item.icon} alt={item.title} />
                                 <span className="txt">{item.title}</span>
                               </label>

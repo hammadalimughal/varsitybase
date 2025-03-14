@@ -89,48 +89,65 @@ const ModelPatch = ({ patch }) => {
 };
 
 const ProductModel = ({ modelPath, patchs, formData }) => {
-    console.log('patch', patchs);
-    console.log('formData', formData);
+    // console.log('patch', JSON.stringify(patchs));
+    // console.log('formData', formData);
     const { scene } = useGLTF(modelPath);
     const textures = useTexture(patchs.map(patch => patch.texture));
     const transparentPatch = useTexture(transparentImage);
-    const leather = useTexture(leatherTexture)
-    const patchTexture = useTexture(flagImage)
     useEffect(() => {
+        console.log('textures', textures)
         scene.traverse((child) => {
             if (child.isMesh) {
                 // console.log("Mesh Name: ", child.name);
                 if (child.name.toLowerCase().includes('patch')) {
                     // console.log("patch: ", child.name);
-                    const material = new THREE.MeshStandardMaterial({
-                        map: transparentPatch,
-                        transparent: true,
-                    });
-                    child.material = material;
-                    child.material.needsUpdate = true;
+                    const patch = patchs.find(p => p.position === child.name);
+                    console.log(child.name, patch)
+                    // debugger
+                    if (patch) {
+                        const index = patchs.indexOf(patch)
+                        // debugger
+                        const texture = textures[index];
+                        texture.flipY = false;  // Disable automatic flipping
+                        texture.needsUpdate = true; // Ensure the update is applied
+                        console.log(child.name, textures[index])
+                        const material = new THREE.MeshStandardMaterial({
+                            map: texture,
+                            transparent: true,
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                    } else {
+                        const material = new THREE.MeshStandardMaterial({
+                            map: transparentPatch,
+                            transparent: true,
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                    }
                 }
                 if (child.name == 'Jacket_snaps' || child.name == 'Mesh006') {
-                    console.log("Body:", child.name);
+                    // console.log("Body:", child.name);
                     child.material.color.set(formData?.body?.hex);
                 }
                 if (child.name == 'sleeves_R' || child.name == 'sleeves_L') {
-                    console.log("Sleeves:", child.name);
+                    // console.log("Sleeves:", child.name);
                     child.material.color.set(formData?.sleeves?.hex);
                 }
                 if (child.name == 'Pockets') {
-                    console.log("Pockets:", child.name);
+                    // console.log("Pockets:", child.name);
                     child.material.color.set(formData?.pocket?.hex);
                 }
                 if (child.name == 'inside_body_zipper' || child.name == 'inside_Jacket_Snaps') {
-                    console.log("Inside Lining:", child.name);
+                    // console.log("Inside Lining:", child.name);
                     child.material.color.set(formData?.insideLining?.hex);
                 }
                 if (child.name == 'Mesh037') {
-                    console.log("Snaps:", child.name);
+                    // console.log("Snaps:", child.name);
                     child.material.color.set(formData?.snaps?.hex);
                 }
                 if (child.name == 'Mesh006_1') {
-                    console.log("Zipper:", child.name);
+                    // console.log("Zipper:", child.name);
                     const material = new THREE.MeshStandardMaterial({
                         map: transparentPatch,
                         transparent: true,
@@ -139,41 +156,12 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                     child.material.needsUpdate = true;
                 }
                 if (child.name == 'Mesh039' || child.name == 'Mesh039_1') {
-                    console.log("Shoulder Inserts:", child.name);
+                    // console.log("Shoulder Inserts:", child.name);
                     child.material.color.set(formData?.shoulderInserts?.hex);
                 }
-                // if (child.name.toLowerCase().includes('collar')) {
-                //     child.material.color.set(formData?.body?.hex);
-                // }
-                // handle collars
-                // if (formData.collar == 'byron' && (child.name == 'collar_hoodie' || child.name == 'Collar_Regular001' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
-                //     console.log("Collar:", child.name);
-                //     const material = new THREE.MeshStandardMaterial({
-                //         map: transparentPatch,
-                //         transparent: true,
-                //     });
-                //     child.material = material;
-                //     child.material.needsUpdate = true;
-                // } else if (formData.collar == 'regular' && (child.name == 'collar_hoodie' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
-                //     console.log("Collar:", child.name);
-                //     const material = new THREE.MeshStandardMaterial({
-                //         map: transparentPatch,
-                //         transparent: true,
-                //     });
-                //     child.material = material;
-                //     child.material.needsUpdate = true;
-                // } else if (formData.collar == 'hoodie' && (child.name == 'Collar_Regular001' || child.name == 'collar_byron' || child.name == 'Collar_RetroSailor001' || child.name == 'collar_sailorwithzipper001')) {
-                //     console.log("Collar:", child.name);
-                //     const material = new THREE.MeshStandardMaterial({
-                //         map: transparentPatch,
-                //         transparent: true,
-                //     });
-                //     child.material = material;
-                //     child.material.needsUpdate = true;
-                // }
                 if (child.name.toLowerCase().includes('collar')) {
                     if (!child.name.toLowerCase().includes(formData.collar)) {
-                        console.log("Collar:", child.name);
+                        // console.log("Collar:", child.name);
                         const material = new THREE.MeshStandardMaterial({
                             map: transparentPatch,
                             transparent: true,
@@ -192,7 +180,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                 }
             }
         });
-    }, [scene, formData]);
+    }, [scene, formData, patchs]);
     scene.position.set(0, -0, 0);
 
     return (
