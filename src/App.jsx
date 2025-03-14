@@ -31,7 +31,6 @@ import patchSkull from './assets/images/patches/skull.png'
 import patchUsFlag from './assets/images/patches/us-flag.png'
 
 // textures
-import textureTransparent from './assets/models/transparent.png'
 import patchPositions from './data/patchPosition'
 
 
@@ -228,7 +227,7 @@ const App = () => {
                             </button>
                           </li>
                         </ul>}
-                        {activeOption == 'collar' && <div className="option-values" id="collar-content">
+                        {activeOption === 'collar' && <div className="option-values" id="collar-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Collar</h6>
                           <h6 className="current-val">{formData.collar}</h6>
@@ -307,7 +306,7 @@ const App = () => {
                             ))}
                           </ul>
                         </div>}
-                        {activeOption == 'insideLining' && <div className="option-values" id="inside-lining-content">
+                        {activeOption === 'insideLining' && <div className="option-values" id="inside-lining-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Inside Lining</h6>
                           <h6 className='current-val'>{formData.insideLining?.name}</h6>
@@ -329,7 +328,7 @@ const App = () => {
                             ))}
                           </ul>
                         </div>}
-                        {activeOption == 'pocket' && <div className="option-values" id="pocket-content">
+                        {activeOption === 'pocket' && <div className="option-values" id="pocket-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Pocket</h6>
                           <h6 className='current-val'>{formData.pocket?.name}</h6>
@@ -351,7 +350,7 @@ const App = () => {
                             ))}
                           </ul>
                         </div>}
-                        {activeOption == 'shoulderInserts' && <div className="option-values" id="shoulderInserts-content">
+                        {activeOption === 'shoulderInserts' && <div className="option-values" id="shoulderInserts-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Shoulder Inserts</h6>
                           <h6 className='current-val'>{formData.shoulderInserts?.name}</h6>
@@ -373,7 +372,7 @@ const App = () => {
                             ))}
                           </ul>
                         </div>}
-                        {activeOption == 'snaps' && <div className="option-values" id="snaps-content">
+                        {activeOption === 'snaps' && <div className="option-values" id="snaps-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
                           <h6>Choose Snaps & Zipper</h6>
                           <h6 className='current-val'>{formData.snaps?.name}</h6>
@@ -451,7 +450,7 @@ const App = () => {
                               </li>
                             </ul>
                           </div>}
-                          {patch?.type == 'image' ? <div className="option-values">
+                          {patch?.type === 'image' ? <div className="option-values">
                             <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <ul className="option-images">
                               <li>
@@ -479,13 +478,13 @@ const App = () => {
                                 </label>
                               </li>
                             </ul>
-                          </div> : patch?.type == 'text' ? <>
+                          </div> : patch?.type === 'text' ? <>
                             <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <div className='input-patch'>
                               <input type="text" placeholder='upto 3 character' onChange={handleTextInput} maxLength={3} />
                               <button onClick={() => addToPatchArray(patch)}>Add</button>
                             </div>
-                          </> : patch?.type == 'upload' && <div className='upload-patch'>
+                          </> : patch?.type === 'upload' && <div className='upload-patch'>
                             <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <div className="upload-field">
                               <input type="file" onChange={handlePathUpload} />

@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useTexture, useGLTF, Text, useProgress } from '@react-three/drei';
+import { OrbitControls, useTexture, useGLTF, useProgress } from '@react-three/drei';
 import loadingGif from '../assets/images/loading.gif'
 import * as THREE from 'three'
 import transparentImage from '../assets/images/patches/transparent.png'
@@ -14,6 +14,19 @@ const Loader = () => {
         </div>
     )
 }
+// [
+//     'Patch_Collar_Back',
+//     'Patch_Collar_RetroSailor',
+//     'patch_collar_sailorwithzipper',
+//     'patch_LeftPocket_down',
+//     'patch_LeftPocket_down_tilted',
+//     'patch_LeftPocket_up',
+//     'patch_LeftPocket_up_tilted',
+//     'patch_RightPocket_down',
+//     'patch_RightPocket_down_tilted',
+//     'patch_RightPocket_up',
+//     'patch_RightPocket_up_tilted'
+// ]
 
 const ProductModel = ({ modelPath, patchs, formData }) => {
     const { scene } = useGLTF(modelPath);
@@ -27,18 +40,6 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                     const patch = patchs.find(p => p.position === child.name);
                     console.log(child.name, patch)
                     if (patch) {
-                        // const index = patchs.indexOf(patch)
-                        // const texture = textures[index];
-                        // texture.flipY = false;  // Disable automatic flipping
-                        // texture.needsUpdate = true; // Ensure the update is applied
-                        // console.log(child.name, textures[index])
-                        // const material = new THREE.MeshStandardMaterial({
-                        //     map: texture,
-                        //     transparent: true,
-                        // });
-                        // child.material = material;
-                        // child.material.needsUpdate = true;
-                        debugger
                         if (patch.type === 'image') {
                             const index = patchs.indexOf(patch);
                             const texture = textures[index];
@@ -85,22 +86,22 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                         child.material.needsUpdate = true;
                     }
                 }
-                if (child.name == 'Jacket_snaps' || child.name == 'Mesh006') {
+                if (child.name === 'Jacket_snaps' || child.name === 'Mesh006') {
                     child.material.color.set(formData?.body?.hex);
                 }
-                if (child.name == 'sleeves_R' || child.name == 'sleeves_L') {
+                if (child.name === 'sleeves_R' || child.name === 'sleeves_L') {
                     child.material.color.set(formData?.sleeves?.hex);
                 }
-                if (child.name == 'Pockets') {
+                if (child.name === 'Pockets') {
                     child.material.color.set(formData?.pocket?.hex);
                 }
-                if (child.name == 'inside_body_zipper' || child.name == 'inside_Jacket_Snaps') {
+                if (child.name === 'inside_body_zipper' || child.name === 'inside_Jacket_Snaps') {
                     child.material.color.set(formData?.insideLining?.hex);
                 }
-                if (child.name == 'Mesh037') {
+                if (child.name === 'Mesh037') {
                     child.material.color.set(formData?.snaps?.hex);
                 }
-                if (child.name == 'Mesh006_1') {
+                if (child.name === 'Mesh006_1') {
                     const material = new THREE.MeshStandardMaterial({
                         map: transparentPatch,
                         transparent: true,
@@ -108,7 +109,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                     child.material = material;
                     child.material.needsUpdate = true;
                 }
-                if (child.name == 'Mesh039' || child.name == 'Mesh039_1') {
+                if (child.name === 'Mesh039' || child.name === 'Mesh039_1') {
                     child.material.color.set(formData?.shoulderInserts?.hex);
                 }
                 if (child.name.toLowerCase().includes('collar')) {
