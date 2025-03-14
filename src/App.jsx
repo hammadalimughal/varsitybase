@@ -55,13 +55,13 @@ const App = () => {
     setPatchArray((prevArray) => {
       let temp = [...prevArray];
       const index = temp.findIndex((item) => item.position === newPatch.position);
-  
+
       if (index !== -1) {
         temp[index] = newPatch;
       } else {
         temp.push(newPatch);
       }
-  
+
       return temp;
     });
   };
@@ -483,7 +483,7 @@ const App = () => {
                             <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
                             <div className='input-patch'>
                               <input type="text" placeholder='upto 3 character' onChange={handleTextInput} maxLength={3} />
-                              <button onClick={addToPatchArray}>Add</button>
+                              <button onClick={() => addToPatchArray(patch)}>Add</button>
                             </div>
                           </> : patch?.type == 'upload' && <div className='upload-patch'>
                             <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
