@@ -36,6 +36,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
+                console.log('child',child.name)
                 if (child.name.toLowerCase().includes('patch')) {
                     const patch = patchs.find(p => p.position === child.name);
                     console.log(child.name, patch)
@@ -86,7 +87,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                         child.material.needsUpdate = true;
                     }
                 }
-                if (child.name === 'Jacket_snaps' || child.name === 'Mesh006') {
+                if (child.name === 'Jacket_snaps' || child.name === 'Mesh005') {
                     child.material.color.set(formData?.body?.hex);
                 }
                 if (child.name === 'sleeves_R' || child.name === 'sleeves_L') {
