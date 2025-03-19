@@ -9,6 +9,7 @@ import { IoChevronBack } from "react-icons/io5";
 
 // data
 import colorsData from './data/colors'
+import patchesCategories from './data/patches'
 
 // images
 import myPatchIcon from './assets/images/patches/types/My-Patches.svg'
@@ -25,14 +26,14 @@ import sailorCollar from './assets/images/sailor-collar.svg'
 // 3d model
 import model from './assets/models/model.glb'
 
-import patchBullDog from './assets/images/patches/bull-dog.png'
-import patchMasks from './assets/images/patches/masks.png'
-import patchSkull from './assets/images/patches/skull.png'
-import patchUsFlag from './assets/images/patches/us-flag.png'
-
 // textures
 import patchPositions from './data/patchPosition'
+import PatchCrop from './components/PatchCrop'
 
+import solidKnit from './assets/images/knit.svg'
+import knitLine1 from './assets/images/knit1.svg'
+import knitLine2 from './assets/images/knit2.svg'
+import knitLine3 from './assets/images/knit3.svg'
 
 const App = () => {
   const [formData, setFormData] = useState({
@@ -41,15 +42,25 @@ const App = () => {
     sleeves: colorsData[0],
     insideLining: colorsData[23],
     pocket: colorsData[23],
-    shoulderInserts: colorsData[2],
+    shoulderInserts: {
+      name: "No Inserts"
+    },
     snaps: colorsData[2],
+    knitTrims: {
+      name: 'Solid',
+      value: 'solid',
+      colors: {
+        base: colorsData[23],
+        stripe: colorsData[2],
+        featuring: colorsData[11]
+      }
+    },
   })
   const [activeOption, setActiveOption] = useState(null)
-  // const [texture, setTexture] = useState(textureTransparent)
+  const [activePatchCategory, setActivePatchCategory] = useState(null)
   const [patch, setPatch] = useState(null)
-
   const [patchArray, setPatchArray] = useState([])
-
+  const [showCrop, setShowCrop] = useState(false)
   const addToPatchArray = (newPatch) => {
     setPatchArray((prevArray) => {
       let temp = [...prevArray];
@@ -65,27 +76,29 @@ const App = () => {
     });
   };
 
-
-
   const handleValue = (e) => {
     const { name, value } = e.target
     try {
-      setFormData({ ...formData, [name]: JSON.parse(value) })
+      if (name == 'knitTrims') {
+        setFormData({ ...formData, knitTrims: { ...formData.knitTrims, name: value } })
+      } else {
+        setFormData({ ...formData, [name]: JSON.parse(value) })
+      }
     } catch (error) {
       setFormData({ ...formData, [name]: value })
     }
   }
 
-
   const handlePatch = (e) => {
     setPatch({ ...patch, texture: e.target.value })
+    setShowCrop(true)
   }
 
-  useEffect(() => {
-    if (patch?.position && patch?.texture) {
-      addToPatchArray(patch)
-    }
-  }, [patch])
+  // useEffect(() => {
+  //   if (patch?.position && patch?.texture) {
+  //     addToPatchArray(patch)
+  //   }
+  // }, [patch])
 
 
   const handlePathUpload = (event) => {
@@ -226,6 +239,17 @@ const App = () => {
                               </div>
                             </button>
                           </li>
+                          <li>
+                            <button onClick={() => setActiveOption('knitTrims')}>
+                              <span className="thumb-color">
+                                <span className="color" style={{ backgroundColor: formData.shoulderInserts?.hex }}></span>
+                              </span>
+                              <div>
+                                <h6 className="option">Knit Trim</h6>
+                                <h4 className="value">{formData.knitTrims?.name}</h4>
+                              </div>
+                            </button>
+                          </li>
                         </ul>}
                         {activeOption === 'collar' && <div className="option-values" id="collar-content">
                           <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
@@ -355,6 +379,21 @@ const App = () => {
                           <h6>Choose Shoulder Inserts</h6>
                           <h6 className='current-val'>{formData.shoulderInserts?.name}</h6>
                           <ul className="option-colors">
+                            <li>
+                              <input
+                                value={JSON.stringify({
+                                  name: "No Inserts"
+                                })}
+                                type="radio"
+                                name="shoulderInserts"
+                                checked={JSON.stringify(formData.shoulderInserts) === JSON.stringify({ name: "No Inserts" })}
+                                onChange={handleValue}
+                                id={`body-shoulderInserts-no-inserts`}
+                              />
+                              <label htmlFor={`body-shoulderInserts-no-inserts`}>
+                                <span className="color"></span>
+                              </label>
+                            </li>
                             {colorsData.map((item, ind) => (
                               <li key={ind}>
                                 <input
@@ -392,6 +431,144 @@ const App = () => {
                                 </label>
                               </li>
                             ))}
+                          </ul>
+                        </div>}
+                        {activeOption === 'knitTrims' && <div className="option-values" id="snaps-content">
+                          <button className="backbtn" onClick={() => setActiveOption(null)}><IoChevronBack /></button>
+                          <h6>Choose Knit Trims</h6>
+                          <h6 className='current-val'>{formData.knitTrims?.name}</h6>
+                          <ul className="option-colors">
+                            <li style={{ width: '20%' }}>
+                              <input type="radio" name="knitTrims" id="solid-knit" value='Solid' onChange={handleValue} />
+                              <label style={{ width: '100%', height: 'auto', borderRadius: '8px' }} htmlFor="solid-knit">
+                                <img src={solidKnit} alt="Solid" />
+                              </label>
+                            </li>
+                            <li style={{ width: '20%' }}>
+                              <input type="radio" name="knitTrims" id="one-knit" value='One color stripe' onChange={handleValue} />
+                              <label style={{ width: '100%', height: 'auto', borderRadius: '8px' }} htmlFor="one-knit">
+                                <img src={knitLine1} alt="One color stripe" />
+                              </label>
+                            </li>
+                            <li style={{ width: '20%' }}>
+                              <input type="radio" name="knitTrims" id="two-knit" value='Two color stripe' onChange={handleValue} />
+                              <label style={{ width: '100%', height: 'auto', borderRadius: '8px' }} htmlFor="two-knit">
+                                <img src={knitLine2} alt="Two color stripe" />
+                              </label>
+                            </li>
+                            <li style={{ width: '20%' }}>
+                              <input type="radio" name="knitTrims" id='knit-stripes' value='Stripes & Feathering' onChange={handleValue} />
+                              <label style={{ width: '100%', height: 'auto', borderRadius: '8px' }} htmlFor="knit-stripes">
+                                <img src={knitLine2} alt="Stripes & Feathering" />
+                              </label>
+                            </li>
+                          </ul>
+                          <ul className="option-keys">
+                            <li>
+                              <button onClick={() => setActiveOption('knitTrimsBase')}>
+                                <span className="thumb-color">
+                                  <span className="color"
+                                    style={{ backgroundColor: formData.knitTrims.colors.base?.hex }}></span>
+                                </span>
+                                <div>
+                                  <h6 className="option">Base Color</h6>
+                                  <h4 className="value">{formData.knitTrims.colors.base?.name}</h4>
+                                </div>
+                              </button>
+                              {activeOption == 'knitTrimsBase' && <ul className="option-colors">
+                                {colorsData.map((item, ind) => (
+                                  <li key={ind}>
+                                    <input
+                                      value={JSON.stringify(item)}
+                                      type="radio"
+                                      name="base"
+                                      checked={formData.knitTrims.colors.base.hex === item.hex}
+                                      onChange={(e) => setFormData({
+                                        ...formData,
+                                        knitTrims: {
+                                          colors: { ...formData.knitTrims.colors, base: item }
+                                        }
+                                      })
+                                      }
+                                      id={`knitbase-color-${item.name.replaceAll(' ', '')}`}
+                                    />
+                                    <label htmlFor={`knitbase-color-${item.name.replaceAll(' ', '')}`}>
+                                      <span className="color" style={{ background: item.hex }}></span>
+                                    </label>
+                                  </li>
+                                ))}
+                              </ul>}
+                            </li>
+                            {formData.knitTrims.name !== 'Solid' && <li>
+                              <button onClick={() => setActiveOption('knitTrimsStripe')}>
+                                <span className="thumb-color">
+                                  <span className="color"
+                                    style={{ backgroundColor: formData.knitTrims.colors.stripe.hex }}></span>
+                                </span>
+                                <div>
+                                  <h6 className="option">Stripe Color</h6>
+                                  <h4 className="value">{formData.knitTrims.colors.stripe?.name}</h4>
+                                </div>
+                              </button>
+                              {activeOption == 'knitTrimsStripe' && <ul className="option-colors">
+                                {colorsData.map((item, ind) => (
+                                  <li key={ind}>
+                                    <input
+                                      value={JSON.stringify(item)}
+                                      type="radio"
+                                      name="stripe"
+                                      checked={formData.knitTrims.colors.stripe.hex === item.hex}
+                                      onChange={(e) => setFormData({
+                                        ...formData,
+                                        knitTrims: {
+                                          colors: { ...formData.knitTrims.colors, stripe: item }
+                                        }
+                                      })
+                                      }
+                                      id={`knitstripe-color-${item.name.replaceAll(' ', '')}`}
+                                    />
+                                    <label htmlFor={`knitstripe-color-${item.name.replaceAll(' ', '')}`}>
+                                      <span className="color" style={{ background: item.hex }}></span>
+                                    </label>
+                                  </li>
+                                ))}
+                              </ul>}
+                            </li>}
+                            {(formData.knitTrims.name == 'Stripes & Feathering') && <li>
+                              <button onClick={() => setActiveOption('knitTrimsFeaturing')}>
+                                <span className="thumb-color">
+                                  <span className="color"
+                                    style={{ backgroundColor: formData.knitTrims.colors.featuring.hex }}></span>
+                                </span>
+                                <div>
+                                  <h6 className="option">Featuring Color</h6>
+                                  <h4 className="value">{formData.knitTrims.colors.featuring?.name}</h4>
+                                </div>
+                              </button>
+                              {activeOption == 'knitTrimsFeaturing' && <ul className="option-colors">
+                                {colorsData.map((item, ind) => (
+                                  <li key={ind}>
+                                    <input
+                                      value={JSON.stringify(item)}
+                                      type="radio"
+                                      name="featuring"
+                                      checked={formData.knitTrims.colors.featuring.hex === item.hex}
+                                      onChange={(e) => setFormData({
+                                        ...formData,
+                                        knitTrims: {
+                                          colors: { ...formData.knitTrims.colors, featuring: item }
+                                        }
+                                      })
+                                      }
+                                      id={`knitfeaturing-color-${item.name.replaceAll(' ', '')}`}
+                                    />
+                                    <label htmlFor={`knitfeaturing-color-${item.name.replaceAll(' ', '')}`}>
+                                      <span className="color" style={{ background: item.hex }}></span>
+                                    </label>
+                                  </li>
+                                ))}
+                              </ul>}
+                            </li>}
                           </ul>
                         </div>}
                       </div>
@@ -451,9 +628,39 @@ const App = () => {
                             </ul>
                           </div>}
                           {patch?.type === 'image' ? <div className="option-values">
-                            <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
+                            <button className="backbtn" onClick={() => { setPatch(null); setActivePatchCategory(null) }}><IoChevronBack /></button>
                             <ul className="option-images">
-                              <li>
+                              {!activePatchCategory ? patchesCategories.map((item, ind) => {
+                                return (
+                                  <li>
+                                    <input type="radio" name="patchCategory" onChange={() => { setActivePatchCategory(item) }} id={`patchCategory${ind}`} />
+                                    <label htmlFor={`patchCategory${ind}`}>
+                                      <img src={item.icon} alt={item.category} />
+                                    </label>
+                                    <span className="txt">{item.category}</span>
+                                  </li>
+                                )
+                              }) :
+                                <>
+                                  {activePatchCategory?.children?.map((item, ind) => {
+                                    return (
+                                      <li key={ind}>
+                                        <input type="radio"
+                                          name="patch"
+                                          value={item.url}
+                                          // onChange={handlePatch}
+                                          onChange={handlePatch}
+                                          id={`patchItem${ind}`}
+                                        />
+                                        <label htmlFor={`patchItem${ind}`}>
+                                          <img src={item.url} alt={item.name} />
+                                        </label>
+                                      </li>
+                                    )
+                                  })}
+                                </>
+                              }
+                              {/* <li>
                                 <input type="radio" name="patch" value={patchBullDog} onChange={handlePatch} id="patch-bull-dog" />
                                 <label htmlFor="patch-bull-dog">
                                   <img src={patchBullDog} alt="" />
@@ -476,7 +683,7 @@ const App = () => {
                                 <label htmlFor="patch-flag">
                                   <img src={patchUsFlag} alt="" />
                                 </label>
-                              </li>
+                              </li> */}
                             </ul>
                           </div> : patch?.type === 'text' ? <>
                             <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
@@ -510,6 +717,7 @@ const App = () => {
             </div>
           </div>
         </div>
+        <PatchCrop patch={patch} open={showCrop} setOpen={setShowCrop} addToPatchArray={addToPatchArray} />
       </main>
     </>
   )

@@ -36,16 +36,18 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
-                console.log('child',child.name)
+                console.log('child', child.name)
                 if (child.name.toLowerCase().includes('patch')) {
                     const patch = patchs.find(p => p.position === child.name);
-                    console.log(child.name, patch)
+                    // console.log(child.name, patch)
                     if (patch) {
                         if (patch.type === 'image') {
                             const index = patchs.indexOf(patch);
                             const texture = textures[index];
-                            texture.flipY = false;
-                            texture.needsUpdate = true;
+                            if (texture) {
+                                texture.flipY = false;
+                                texture.needsUpdate = true;
+                            }
                             const material = new THREE.MeshStandardMaterial({
                                 map: texture,
                                 transparent: true,
@@ -53,7 +55,6 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                             child.material = material;
                             child.material.needsUpdate = true;
                         } else if (patch.type === 'text') {
-                            debugger
                             // Add Text to the material
                             const canvas = document.createElement('canvas');
                             const context = canvas.getContext('2d');
@@ -87,6 +88,14 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                         child.material.needsUpdate = true;
                     }
                 }
+                if (child.name === 'shadow') {
+                    const material = new THREE.MeshStandardMaterial({
+                        map: transparentPatch,
+                        transparent: true,
+                    });
+                    child.material = material;
+                    child.material.needsUpdate = true;
+                }
                 if (child.name === 'Jacket_snaps' || child.name === 'Mesh005') {
                     child.material.color.set(formData?.body?.hex);
                 }
@@ -102,6 +111,23 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                 if (child.name === 'Mesh037') {
                     child.material.color.set(formData?.snaps?.hex);
                 }
+                if (child.name === 'Knit_Trim_1line' || child.name === 'Knit_Trim_2line' || child.name === 'Knit_Trim_4line') {
+                    if (formData.knitTrims === 'line01') {
+                        const material = new THREE.MeshStandardMaterial({
+                            map: transparentPatch,
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                        child.material.color.set(formData?.shoulderInserts?.hex);
+                    } else {
+                        const material = new THREE.MeshStandardMaterial({
+                            map: transparentPatch,
+                            transparent: true,
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                    }
+                }
                 if (child.name === 'Mesh006_1') {
                     const material = new THREE.MeshStandardMaterial({
                         map: transparentPatch,
@@ -111,7 +137,21 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                     child.material.needsUpdate = true;
                 }
                 if (child.name === 'Mesh039' || child.name === 'Mesh039_1') {
-                    child.material.color.set(formData?.shoulderInserts?.hex);
+                    if (JSON.stringify(formData?.shoulderInserts) === JSON.stringify({ name: "No Inserts" })) {
+                        const material = new THREE.MeshStandardMaterial({
+                            map: transparentPatch,
+                            transparent: true,
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                    } else {
+                        const material = new THREE.MeshStandardMaterial({
+                            map: transparentPatch,
+                        });
+                        child.material = material;
+                        child.material.needsUpdate = true;
+                        child.material.color.set(formData?.shoulderInserts?.hex);
+                    }
                 }
                 if (child.name.toLowerCase().includes('collar')) {
                     if (!child.name.toLowerCase().includes(formData.collar)) {
