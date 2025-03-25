@@ -38,10 +38,10 @@ import knitLine3 from './assets/images/knit3.svg'
 const App = () => {
   const [formData, setFormData] = useState({
     collar: 'byron',
-    body: colorsData[0],
+    body: colorsData[17],
     sleeves: colorsData[0],
     insideLining: colorsData[23],
-    pocket: colorsData[23],
+    pocket: colorsData[0],
     shoulderInserts: {
       name: "No Inserts"
     },
@@ -61,19 +61,71 @@ const App = () => {
   const [patch, setPatch] = useState(null)
   const [patchArray, setPatchArray] = useState([])
   const [showCrop, setShowCrop] = useState(false)
+
+
+  const enlargeImage = (imageUrl, callback) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous"; // Prevent CORS issues
+    img.src = imageUrl;
+  
+    img.onload = () => {
+      const paddingFactor = 0.2; // 20% padding
+      const newWidth = img.width * (1 + 2 * paddingFactor);
+      const newHeight = img.height * (1 + 2 * paddingFactor);
+  
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+  
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+  
+      // Fill the background with transparency
+      ctx.clearRect(0, 0, newWidth, newHeight);
+  
+      // Draw the original image in the center
+      ctx.drawImage(img, img.width * paddingFactor, img.height * paddingFactor);
+  
+      // Convert canvas to blob URL
+      canvas.toBlob((blob) => {
+        const newTexture = URL.createObjectURL(blob);
+        callback(newTexture);
+      }, "image/png");
+    };
+  };
+
   const addToPatchArray = (newPatch) => {
-    setPatchArray((prevArray) => {
-      let temp = [...prevArray];
-      const index = temp.findIndex((item) => item.position === newPatch.position);
-
-      if (index !== -1) {
-        temp[index] = newPatch;
-      } else {
-        temp.push(newPatch);
-      }
-
-      return temp;
-    });
+    if (newPatch.type === "image") {
+      enlargeImage(newPatch.texture, (newTexture) => {
+        const updatedPatch = { ...newPatch, texture: newTexture };
+        
+        setPatchArray((prevArray) => {
+          let temp = [...prevArray];
+          const index = temp.findIndex((item) => item.position === updatedPatch.position);
+  
+          if (index !== -1) {
+            temp[index] = updatedPatch;
+          } else {
+            temp.push(updatedPatch);
+          }
+  
+          return temp;
+        });
+      });
+    } else {
+      // If it's not an image, add it directly
+      setPatchArray((prevArray) => {
+        let temp = [...prevArray];
+        const index = temp.findIndex((item) => item.position === newPatch.position);
+  
+        if (index !== -1) {
+          temp[index] = newPatch;
+        } else {
+          temp.push(newPatch);
+        }
+  
+        return temp;
+      });
+    }
   };
 
   const handleValue = (e) => {
