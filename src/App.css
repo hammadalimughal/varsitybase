@@ -72,6 +72,8 @@ button:focus {
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .jacket-builder .builder-options .options-tabs {
@@ -255,6 +257,7 @@ button:focus {
 }
 
 .jacket-builder .option-values .option-colors li label {
+  position: relative;
   height: 40px;
   width: 40px;
   display: block;
@@ -263,6 +266,17 @@ button:focus {
   padding: 7px;
   cursor: pointer;
 }
+.jacket-builder .option-values .option-colors li label.no-value::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 1px;
+  width: 100%;
+  background-color: #e2e8f0;
+  transform: rotate(45deg) translate(-50%, -50%);
+  transform-origin: top left;
+}
 
 .jacket-builder .option-values .option-colors li input {
   display: none;
@@ -270,6 +284,10 @@ button:focus {
 
 .jacket-builder .option-values .option-colors li input:checked+label {
   border-color: #000;
+}
+
+.jacket-builder .option-values .option-colors li input:checked+label::before {
+  background-color: #000;
 }
 
 .jacket-builder .option-values .option-colors li label .color {

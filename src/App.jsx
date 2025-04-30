@@ -35,6 +35,9 @@ import knitLine1 from './assets/images/knit1.svg'
 import knitLine2 from './assets/images/knit2.svg'
 import knitLine3 from './assets/images/knit3.svg'
 
+import { TbCircleOff } from "react-icons/tb";
+
+
 const App = () => {
   const [formData, setFormData] = useState({
     collar: 'byron',
@@ -67,24 +70,24 @@ const App = () => {
     const img = new Image();
     img.crossOrigin = "anonymous"; // Prevent CORS issues
     img.src = imageUrl;
-  
+
     img.onload = () => {
       const paddingFactor = 0.2; // 20% padding
       const newWidth = img.width * (1 + 2 * paddingFactor);
       const newHeight = img.height * (1 + 2 * paddingFactor);
-  
+
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
-  
+
       canvas.width = newWidth;
       canvas.height = newHeight;
-  
+
       // Fill the background with transparency
       ctx.clearRect(0, 0, newWidth, newHeight);
-  
+
       // Draw the original image in the center
       ctx.drawImage(img, img.width * paddingFactor, img.height * paddingFactor);
-  
+
       // Convert canvas to blob URL
       canvas.toBlob((blob) => {
         const newTexture = URL.createObjectURL(blob);
@@ -94,20 +97,21 @@ const App = () => {
   };
 
   const addToPatchArray = (newPatch) => {
+    console.log('newPatch', newPatch)
     if (newPatch.type === "image") {
       enlargeImage(newPatch.texture, (newTexture) => {
         const updatedPatch = { ...newPatch, texture: newTexture };
-        
+
         setPatchArray((prevArray) => {
           let temp = [...prevArray];
           const index = temp.findIndex((item) => item.position === updatedPatch.position);
-  
+
           if (index !== -1) {
             temp[index] = updatedPatch;
           } else {
             temp.push(updatedPatch);
           }
-  
+
           return temp;
         });
       });
@@ -116,13 +120,13 @@ const App = () => {
       setPatchArray((prevArray) => {
         let temp = [...prevArray];
         const index = temp.findIndex((item) => item.position === newPatch.position);
-  
+
         if (index !== -1) {
           temp[index] = newPatch;
         } else {
           temp.push(newPatch);
         }
-  
+
         return temp;
       });
     }
@@ -194,7 +198,7 @@ const App = () => {
           <div className="container-fluid">
             <div className="row g-4">
               <div className="col-lg-4 col-12 panel">
-                <div className="builder-options h-100">
+                <div className="builder-options">
                   <ul className="options-tabs" id="pills-tab" role="tablist">
                     <li className="nav-item" role="presentation">
                       <button className="nav-link active" onClick={() => setActiveOption(null)} id="pills-material-tab" data-bs-toggle="pill"
@@ -283,7 +287,7 @@ const App = () => {
                           <li>
                             <button onClick={() => setActiveOption('snaps')}>
                               <span className="thumb-color">
-                                <span className="color" style={{ backgroundColor: formData.shoulderInserts?.hex }}></span>
+                                <span className="color" style={{ backgroundColor: formData.snaps?.hex }}></span>
                               </span>
                               <div>
                                 <h6 className="option">Snaps</h6>
@@ -442,8 +446,8 @@ const App = () => {
                                 onChange={handleValue}
                                 id={`body-shoulderInserts-no-inserts`}
                               />
-                              <label htmlFor={`body-shoulderInserts-no-inserts`}>
-                                <span className="color"></span>
+                              <label className='no-value' htmlFor={`body-shoulderInserts-no-inserts`}>
+                                {/* <span className="color"></span> */}
                               </label>
                             </li>
                             {colorsData.map((item, ind) => (
@@ -639,7 +643,7 @@ const App = () => {
                           </ul>}
                           {(patch?.position && !patch.type) && <div>
                             <button className="backbtn" onClick={() => setPatch(null)}><IoChevronBack /></button>
-                            <h6>{patch.position.split('-').join(' ')}</h6>
+                            {/* <h6>{patch.position.split('-').join(' ')}</h6> */}
                             <h6 className="current-val">byron</h6>
                             <ul className="option-images">
                               <li>

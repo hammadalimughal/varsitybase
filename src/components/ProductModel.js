@@ -36,10 +36,23 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
     useEffect(() => {
         scene.traverse((child) => {
             if (child.isMesh) {
-                console.log('child', child.name)
+                // if (!child.name.includes('patch')) {
+                    console.log('child', child.name)
+                // }
                 if (child.name.toLowerCase().includes('patch')) {
-                    const patch = patchs.find(p => p.position === child.name);
-                    // console.log(child.name, patch)
+                    var patch = patchs.find(p => p.position === child.name);
+                    // back patch
+                    if (child.name === 'patch_Backjacket' || child.name === 'patch8') {
+                        patch = patchs.find(p => p.position.includes('patch_Backjacket'));
+                        console.log('patch back',patch)
+                        if(patch){
+                            debugger
+                            if (Array.isArray(patch.position)) {
+                                patch.position = formData.collar === 'sailor' ? patch.position[1] : patch.position[0]
+                            }
+                        }
+                        console.log('arranged patch',patch)
+                    }
                     if (patch) {
                         if (patch.type === 'image') {
                             const index = patchs.indexOf(patch);
@@ -108,7 +121,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                 if (child.name === 'inside_body_zipper' || child.name === 'inside_Jacket_Snaps') {
                     child.material.color.set(formData?.insideLining?.hex);
                 }
-                if (child.name === 'Mesh037') {
+                if (child.name === 'Mesh034' || child.name === 'Mesh034_1') {
                     child.material.color.set(formData?.snaps?.hex);
                 }
                 if (child.name === 'Knit_Trim_1line' || child.name === 'Knit_Trim_2line' || child.name === 'Knit_Trim_4line') {
@@ -136,7 +149,7 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                     child.material = material;
                     child.material.needsUpdate = true;
                 }
-                if (child.name === 'Mesh039' || child.name === 'Mesh039_1') {
+                if (child.name === 'Mesh036' || child.name === 'Mesh036_1') {
                     if (JSON.stringify(formData?.shoulderInserts) === JSON.stringify({ name: "No Inserts" })) {
                         const material = new THREE.MeshStandardMaterial({
                             map: transparentPatch,
@@ -152,6 +165,10 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
                         child.material.needsUpdate = true;
                         child.material.color.set(formData?.shoulderInserts?.hex);
                     }
+                }
+                // testing purpose
+                if (child.name === 'Knit_Trim_1line') {
+                    child.material.color.set(formData?.pocket?.hex);
                 }
                 if (child.name.toLowerCase().includes('collar')) {
                     if (!child.name.toLowerCase().includes(formData.collar)) {
@@ -174,11 +191,12 @@ const ProductModel = ({ modelPath, patchs, formData }) => {
             }
         });
     }, [scene, formData, patchs]);
-    scene.position.set(0, -0, 0);
+
+    scene.position.set(0, 0.5, 0);
 
     return (
         <>
-            <primitive object={scene} scale={0.4} />;
+            <primitive object={scene} scale={0.3} />;
         </>
     );
 };

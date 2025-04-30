@@ -17,77 +17,77 @@ import rightShoulder from '../assets/images/design-patches/Right-shoulder.svg'
 const patchPositions = [
     {
         title: 'Right Chest',
-        value: 'Patch_chest_R',
+        value: 'patch10',
         icon: rightChest
     },
     {
         title: 'Left Chest',
-        value: 'Patch_chest_L',
+        value: 'patch9',
         icon: leftChest
     },
     {
         title: 'Above Left Elbow',
-        value: 'patch_L_sleeve3',
+        value: 'patch4',
         icon: aboveLeftElbow
     },
     {
         title: 'Above Right Elbow',
-        value: 'patch_R_sleeve3',
+        value: 'patch1',
         icon: aboveRightElbow
     },
     {
         title: 'Back',
-        value: 'patch_Backjacket',
+        value: ['patch_Backjacket', 'patch8'],
         icon: back
     },
     {
         title: 'Below Left Elbow',
-        value: 'patch_L_sleeve2',
+        value: 'patch5',
         icon: belowLeftElbow
     },
     {
         title: 'Below Right Elbow',
-        value: 'patch_R_sleeve2',
+        value: 'patch2',
         icon: belowRightElbow
     },
     {
         title: 'Bottom Left Sleeve',
-        value: 'patch_L_sleeve1',
+        value: 'patch6',
         icon: bottomLeftSleeve
     },
     {
         title: 'Bottom Right Sleeve',
-        value: 'patch_R_sleeve1',
+        value: 'patch3',
         icon: bottomRightSleeve
     },
     {
         title: 'Left Shoulder',
-        value: 'patch_L_sleeve4',
+        value: 'patch7',
         icon: leftShoulder
     },
     {
         title: 'Right Shoulder',
-        value: 'patch_R_sleeve4',
+        value: 'patch10',
         icon: rightShoulder
     },
     {
         title: 'Above Left Pocket',
-        value: 'patch_LeftPocket_down',
+        value: 'patch13',
         icon: aboveLeftPocket
     },
     {
         title: 'Above Right Pocket',
-        value: 'patch_RightPocket_down',
+        value: 'patch14',
         icon: aboveRightPocket
     },
     {
         title: 'Below Left Pocket',
-        value: 'patch_LeftPocket_up',
+        value: 'patch11',
         icon: belowLeftPocket
     },
     {
         title: 'Below Right Pocket',
-        value: 'patch_RightPocket_up',
+        value: 'patch12',
         icon: belowRightPocket
     }
 ]
